@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>아이고마켓 | 메리고라운드 · 테테코 포근한 아동복</title>
+<meta name="description" content="아이고, 예쁘다! 엄마가 고른 포근한 아동복, 아이고마켓. 메리고라운드 34종과 테테코 45종을 브랜드별로 보고 카카오톡으로 간편하게 주문하세요.">
+<meta property="og:title" content="아이고마켓 | 메리고라운드 · 테테코 포근한 아동복">
+<meta property="og:description" content="메리고라운드 34종 · 테테코 45종, 총 79종. 브랜드별로 골라 카카오톡으로 주문.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* =========================================================
+   아이고마켓 (IGOMARKET) — 메리고라운드 + 테테코 통합판
+   ---------------------------------------------------------
+   ★ 운영 전 수정 포인트는 아래 두 곳입니다.
+     1) <script> 안의 KAKAO_URL  (카카오톡 오픈채팅 주소)
+     2) PRODUCTS 배열의 가격·사진·상품명 (build.py 가 src/*.json 으로 만듦)
+   ========================================================= */
+:root{
+  --cream:#FFF9F0;
+  --cream-2:#FFFDF8;
+  --butter:#FFE9B0;
+  --butter-deep:#F2C96B;
+  --peach:#FFCFC0;
+  --peach-deep:#F79C86;
+  --sage:#D5E7DA;
+  --sage-deep:#7FA98C;
+  --lilac:#E6DDF3;
+  --lilac-deep:#A48FC9;
+  --ink:#4A3F35;
+  --ink-soft:#7C6E62;
+  --line:#F0E4D6;
+  --white:#fff;
+  --radius-lg:28px;
+  --radius:20px;
+  --radius-sm:14px;
+  --shadow-sm:0 6px 18px rgba(150,120,90,.08);
+  --shadow:0 14px 40px rgba(150,120,90,.13);
+  --shadow-lg:0 24px 70px rgba(130,100,70,.18);
+  --max:1180px;
+  --header-h:64px;
+  --merry:#C4705199;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;font-family:var(--font);color:var(--ink);background:var(--cream);word-break:keep-all;
+  font-size:16px;line-height:1.65;letter-spacing:-.01em;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+h1,h2,h3,h4{margin:0;line-height:1.3;letter-spacing:-.03em}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+::selection{background:var(--butter);color:var(--ink)}
+
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+.sec{padding:96px 0}
+.sec--tight{padding:72px 0}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--peach-deep);background:#fff;border:1px solid var(--line);
+  padding:7px 14px;border-radius:999px;
+}
+.sec-head{display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;margin-bottom:44px}
+.sec-head h2{font-size:clamp(26px,3.4vw,38px);font-weight:800}
+.sec-head p{color:var(--ink-soft);font-size:15.5px;max-width:680px;word-break:keep-all}
+
+/* ---------- 공지 바 ---------- */
+.notice-bar{
+  background:linear-gradient(90deg,var(--peach) 0%,var(--butter) 55%,var(--sage) 100%);
+  color:#5A4636;font-size:13px;font-weight:600;letter-spacing:-.01em;
+}
+.notice-bar .wrap{display:flex;align-items:center;justify-content:center;gap:10px;min-height:40px;position:relative;padding-right:44px}
+.notice-bar p{text-align:center;line-height:1.4}
+.notice-bar b{font-weight:800}
+.notice-close{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  font-size:16px;line-height:1;color:#7a6450;background:rgba(255,255,255,.45);
+  transition:.2s;
+}
+.notice-close:hover{background:#fff}
+
+/* ---------- 헤더 ---------- */
+.header{
+  position:sticky;top:0;z-index:60;background:rgba(255,249,240,.86);
+  backdrop-filter:saturate(160%) blur(14px);-webkit-backdrop-filter:saturate(160%) blur(14px);
+  border-bottom:1px solid transparent;transition:.25s;
+}
+.header.is-stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px rgba(150,120,90,.07)}
+.header .wrap{display:flex;align-items:center;gap:22px;height:var(--header-h)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;letter-spacing:-.04em;white-space:nowrap}
+.logo-mark{
+  width:32px;height:32px;border-radius:11px;display:grid;place-items:center;font-size:16px;
+  background:linear-gradient(150deg,var(--butter),var(--peach));
+  box-shadow:inset 0 -2px 6px rgba(255,255,255,.7),0 4px 10px rgba(240,190,140,.35);
+}
+.logo small{display:block;font-size:9.5px;font-weight:700;letter-spacing:.22em;color:var(--ink-soft);line-height:1;margin-top:3px}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav a{
+  font-size:14.5px;font-weight:600;color:var(--ink-soft);padding:9px 14px;border-radius:999px;transition:.18s;
+}
+.nav a:hover{color:var(--ink);background:#fff}
+.head-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{
+  position:relative;width:42px;height:42px;border-radius:50%;background:#fff;border:1px solid var(--line);
+  display:grid;place-items:center;font-size:17px;transition:.18s;
+}
+.icon-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.cart-count{
+  position:absolute;top:-4px;right:-4px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;
+  background:var(--peach-deep);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;
+  border:2px solid var(--cream);
+}
+.cart-count[hidden]{display:none}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 22px;border-radius:999px;font-size:14.5px;font-weight:700;
+  transition:transform .18s,box-shadow .18s,background .18s,color .18s;white-space:nowrap;
+}
+.btn:active{transform:scale(.97)}
+.btn--kakao{background:#FEE500;color:#3C1E1E}
+.btn--kakao:hover{box-shadow:0 10px 24px rgba(254,229,0,.45);transform:translateY(-2px)}
+.btn--primary{background:var(--ink);color:var(--cream)}
+.btn--primary:hover{background:#3a3129;transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn--ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn--ghost:hover{border-color:var(--butter-deep);transform:translateY(-2px)}
+.btn--peach{background:var(--peach);color:#7A3B28}
+.btn--peach:hover{background:#FFBDA9;transform:translateY(-2px)}
+.btn--wide{width:100%}
+.btn--sm{padding:9px 16px;font-size:13.5px}
+
+/* ---------- 히어로 ---------- */
+.hero{position:relative;overflow:hidden;background:var(--cream-2)}
+.hero-bg{
+  position:absolute;inset:0;
+  background-image:url("assets/hero-web.jpg");
+  background-size:cover;background-position:78% center;
+}
+.hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(100deg,rgba(255,249,240,.97) 0%,rgba(255,249,240,.92) 32%,rgba(255,249,240,.35) 58%,rgba(255,249,240,0) 78%);
+}
+.hero .wrap{position:relative;z-index:2;display:flex;align-items:center;min-height:min(660px,72vh)}
+.hero-copy{max-width:540px;padding:72px 0}
+.hero h1{
+  font-size:clamp(38px,5.6vw,64px);font-weight:900;letter-spacing:-.05em;line-height:1.12;margin:18px 0 0;
+}
+.hero h1 em{font-style:normal;position:relative;display:inline-block;color:#B4715A}
+.hero h1 em::after{
+  content:"";position:absolute;left:-2px;right:-2px;bottom:4px;height:14px;border-radius:8px;
+  background:rgba(255,233,176,.85);z-index:-1;
+}
+.hero-sub{margin-top:18px;font-size:16.5px;color:#6B5B4E;line-height:1.75;max-width:460px}
+.hero-sub b{color:var(--ink)}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.hero-tags{display:flex;gap:18px;flex-wrap:wrap;margin-top:34px;padding-top:24px;border-top:1px dashed #EBDCCB}
+.hero-tags div{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#7C6A5B}
+.hero-tags span{font-size:15px}
+
+/* ---------- 마퀴 ---------- */
+.strip{background:var(--butter);overflow:hidden;border-top:1px solid rgba(0,0,0,.03);border-bottom:1px solid rgba(0,0,0,.03)}
+.strip-track{display:flex;gap:0;animation:marq 26s linear infinite;width:max-content;padding:11px 0}
+.strip-track span{font-size:13px;font-weight:700;letter-spacing:.02em;color:#7A6340;padding:0 26px;white-space:nowrap}
+.strip-track span::after{content:"·";margin-left:26px;color:#C9AE7C}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- 브랜드 전환 탭 ---------- */
+.brand-switch{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.bs-btn{
+  display:inline-flex;align-items:center;gap:9px;padding:13px 22px;border-radius:999px;
+  background:#fff;border:1.5px solid var(--line);font-size:15px;font-weight:800;color:var(--ink-soft);
+  box-shadow:var(--shadow-sm);transition:transform .18s,background .18s,color .18s,border-color .18s;
+}
+.bs-btn .bs-count{
+  font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;
+  background:#FBF3E8;color:#A99887;line-height:1.5;
+}
+.bs-btn:hover{transform:translateY(-2px);border-color:var(--butter-deep);color:var(--ink)}
+.bs-btn.is-on{color:#FFF6E9;border-color:var(--ink);background:var(--ink);box-shadow:0 10px 24px rgba(74,63,53,.2)}
+.bs-btn.is-on .bs-count{background:rgba(255,255,255,.2);color:#FFF1CE}
+.bs-btn[data-brand="merry"].is-on{background:#C97F63;border-color:#C97F63;box-shadow:0 10px 24px rgba(201,127,99,.3)}
+.bs-btn[data-brand="teteco"].is-on{background:#6E9A80;border-color:#6E9A80;box-shadow:0 10px 24px rgba(110,154,128,.3)}
+.brand-intro{
+  display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+  text-align:center;font-size:13.5px;color:var(--ink-soft);font-weight:600;margin-bottom:30px;
+}
+.brand-intro b{font-weight:800;color:var(--ink)}
+
+/* 브랜드 이름표 */
+.brand-tag{
+  display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;letter-spacing:-.01em;
+  padding:4px 10px;border-radius:999px;line-height:1.5;white-space:nowrap;
+}
+.brand-tag--merry{background:#FFE6DD;color:#B0603F}
+.brand-tag--teteco{background:#E2EFE6;color:#4C775B}
+
+/* ---------- 상품 ---------- */
+.filters{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:38px}
+.chip{
+  padding:10px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--line);
+  font-size:14px;font-weight:700;color:var(--ink-soft);transition:.18s;
+}
+.chip:hover{border-color:var(--peach);color:var(--ink)}
+.chip.is-on{background:var(--ink);border-color:var(--ink);color:#FFF6E9;box-shadow:0 8px 20px rgba(74,63,53,.18)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px}
+.card{
+  background:#fff;border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:var(--shadow-sm);border:1px solid #F6EBDD;
+  display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.2,.7,.3,1),box-shadow .3s;
+  position:relative;
+}
+.card:hover{transform:translateY(-7px);box-shadow:var(--shadow)}
+.card-media{position:relative;aspect-ratio:1/1;background:#FBF3E8;overflow:hidden;cursor:pointer}
+.card-media img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.3,1)}
+.card:hover .card-media img{transform:scale(1.045)}
+.badge{
+  position:absolute;top:14px;left:14px;z-index:2;
+  font-size:11px;font-weight:800;letter-spacing:.06em;padding:6px 11px;border-radius:999px;
+  background:var(--peach);color:#7A3B28;box-shadow:0 4px 12px rgba(190,120,90,.22);
+}
+.badge--new{background:var(--sage);color:#41654F}
+.badge--best{background:var(--butter);color:#7A5B18}
+.card-shots{
+  position:absolute;right:12px;bottom:12px;z-index:2;display:inline-flex;align-items:center;gap:4px;
+  background:rgba(74,63,53,.62);color:#fff;font-size:10.5px;font-weight:800;
+  padding:4px 9px;border-radius:999px;letter-spacing:-.01em;
+}
+.card-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.card-cat{font-size:11.5px;font-weight:700;letter-spacing:.1em;color:#B8A492;text-transform:uppercase}
+.card-name{font-size:16px;font-weight:750;letter-spacing:-.03em;cursor:pointer}
+.card-name:hover{text-decoration:underline;text-decoration-color:var(--peach);text-underline-offset:4px}
+.price-row{display:flex;align-items:baseline;gap:8px;margin-top:2px}
+.price{font-size:18px;font-weight:850;letter-spacing:-.03em}
+.price-off{font-size:12px;font-weight:800;color:var(--peach-deep)}
+.origin{font-size:12.5px;color:#BBAE9F;text-decoration:line-through}
+.clist{display:flex;flex-wrap:wrap;gap:5px}
+.ctag{font-size:11px;font-weight:700;color:#8A7A6B;background:#FBF3E8;border:1px solid #F2E4D2;border-radius:999px;padding:3px 8px;line-height:1.4}
+.ctag--more{color:#A99887;background:#fff}
+.card-sizes{font-size:11.5px;font-weight:700;color:#B8A492;letter-spacing:-.01em}
+.card-actions{display:flex;gap:8px;margin-top:12px}
+.card-actions .btn{flex:1}
+.more-wrap{display:flex;justify-content:center;margin-top:34px}
+.more-wrap .btn{min-width:200px}
+.grid-count{text-align:center;font-size:13px;font-weight:700;color:#A99887;margin-top:16px}
+
+/* ---------- 브랜드 소개 ---------- */
+.brand{background:linear-gradient(180deg,var(--cream) 0%,#FDF1E4 100%)}
+.brand-cards{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:52px}
+.brand-card{
+  background:#fff;border-radius:var(--radius-lg);border:1px solid #F6EBDD;box-shadow:var(--shadow-sm);
+  overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;
+}
+.brand-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.brand-card--merry{border-top:4px solid #F0B49E}
+.brand-card--teteco{border-top:4px solid #A9C9B4}
+.bc-photo{aspect-ratio:16/10;background:#FBF3E8;overflow:hidden}
+.bc-photo img{width:100%;height:100%;object-fit:cover}
+.bc-body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
+.bc-body h3{font-size:19px;font-weight:850;margin-top:2px}
+.bc-body p{font-size:13.5px;color:var(--ink-soft);line-height:1.7}
+.bc-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:2px}
+.bc-meta li{font-size:11.5px;font-weight:700;color:#8A7A6B;background:#FBF3E8;border:1px solid #F2E4D2;border-radius:999px;padding:4px 10px}
+.bc-body .brand-tag{align-self:flex-start}
+.bc-body .btn{margin-top:14px;width:100%}
+.brand-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.brand-copy h2{font-size:clamp(26px,3.4vw,38px);font-weight:850;margin-bottom:20px;line-height:1.32}
+.brand-copy h2 span{color:#B4715A}
+.brand-copy p{color:#6E5E51;font-size:15.5px;line-height:1.85;margin-bottom:14px}
+.brand-points{display:grid;gap:12px;margin-top:26px}
+.brand-points li{
+  display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:var(--radius);
+  padding:16px 18px;box-shadow:var(--shadow-sm);border:1px solid #F6EBDD;
+}
+.brand-points .ic{font-size:20px;line-height:1.4}
+.brand-points b{display:block;font-size:14.5px;font-weight:800;margin-bottom:2px}
+.brand-points small{font-size:13px;color:var(--ink-soft);line-height:1.55}
+.brand-visual{position:relative}
+.brand-photo{border-radius:36px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/5;background:#FBF3E8}
+.brand-photo img{width:100%;height:100%;object-fit:cover}
+.brand-note{
+  position:absolute;left:-16px;bottom:28px;background:#fff;border-radius:22px;padding:16px 20px;
+  box-shadow:var(--shadow);font-size:13.5px;font-weight:700;line-height:1.5;max-width:250px;
+  border:1px solid #F6EBDD;
+}
+.brand-note span{display:block;font-size:11.5px;font-weight:600;color:var(--ink-soft);margin-top:4px}
+
+/* ---------- 주문 안내 ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:48px}
+.step{background:#fff;border-radius:var(--radius);padding:26px 22px;border:1px solid #F6EBDD;box-shadow:var(--shadow-sm);position:relative}
+.step-num{
+  width:34px;height:34px;border-radius:12px;display:grid;place-items:center;font-weight:850;font-size:14px;
+  background:var(--butter);color:#7A5B18;margin-bottom:14px;
+}
+.step:nth-child(2) .step-num{background:var(--peach);color:#7A3B28}
+.step:nth-child(3) .step-num{background:var(--sage);color:#41654F}
+.step:nth-child(4) .step-num{background:var(--lilac);color:#5C4A80}
+.step h4{font-size:15.5px;font-weight:800;margin-bottom:6px}
+.step p{font-size:13px;color:var(--ink-soft);line-height:1.6}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.info-card{background:#fff;border-radius:var(--radius-lg);padding:30px 32px;border:1px solid #F6EBDD;box-shadow:var(--shadow-sm)}
+.info-card h3{font-size:18px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:9px}
+.info-list{display:grid;gap:11px}
+.info-list li{display:flex;gap:12px;font-size:13.8px;color:#6E5E51;line-height:1.7}
+.info-list li b{flex:0 0 82px;color:var(--ink);font-weight:750}
+.info-list li span b{flex:none;font-weight:850}
+.delivery-table{width:100%;border-collapse:collapse;font-size:13.8px;margin-top:4px}
+.delivery-table th,.delivery-table td{padding:11px 8px;text-align:left;border-bottom:1px dashed #EFE2D2}
+.delivery-table th{color:var(--ink-soft);font-weight:700;width:96px}
+.delivery-table tr:last-child td,.delivery-table tr:last-child th{border-bottom:0}
+.delivery-table td b{font-weight:850;color:var(--ink)}
+.pay-box{background:linear-gradient(135deg,#FFF4DC,#FFE9E0);border:1px solid #F4E2CB;border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:16px}
+.pay-box span{display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;color:#9A7A5C}
+.pay-box b{display:block;font-size:17px;font-weight:850;letter-spacing:-.02em;margin-top:3px}
+.pay-box small{display:block;font-size:11.5px;color:#8A7663;font-weight:600;margin-top:2px}
+
+/* ---------- FAQ / 공지 ---------- */
+.faq-wrap{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.faq-col h3{font-size:18px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:9px}
+details{
+  background:#fff;border:1px solid #F6EBDD;border-radius:var(--radius);margin-bottom:10px;
+  box-shadow:var(--shadow-sm);overflow:hidden;
+}
+details[open]{border-color:var(--butter-deep)}
+summary{
+  list-style:none;cursor:pointer;padding:17px 20px;font-size:14.5px;font-weight:700;
+  display:flex;align-items:center;gap:10px;
+}
+summary::-webkit-details-marker{display:none}
+summary .q{color:var(--peach-deep);font-weight:900;font-size:13px}
+summary::after{content:"+";margin-left:auto;font-size:19px;font-weight:400;color:#C4B4A3;transition:.2s}
+details[open] summary::after{transform:rotate(45deg);color:var(--peach-deep)}
+details p{padding:0 20px 19px 46px;font-size:13.8px;color:#6E5E51;line-height:1.75}
+.faq-size-table{width:calc(100% - 46px);margin:0 20px 10px 46px;border-collapse:collapse;font-size:12.5px}
+.faq-size-table th,.faq-size-table td{border-bottom:1px dashed #EFE2D2;padding:6px 4px;text-align:center}
+.faq-size-table th{color:var(--ink-soft);font-weight:750;background:#FFFBF3}
+.faq-size-table td:first-child{font-weight:800;color:var(--ink)}
+.faq-size-foot{font-size:11.5px;color:#A99887;padding:0 20px 18px 46px;line-height:1.6}
+.notice-list li{
+  display:flex;gap:14px;align-items:baseline;padding:15px 20px;background:#fff;border:1px solid #F6EBDD;
+  border-radius:var(--radius-sm);margin-bottom:9px;font-size:14px;font-weight:600;box-shadow:var(--shadow-sm);
+}
+.notice-list time{font-size:12px;color:#B8A492;font-weight:700;flex:0 0 auto}
+
+/* ---------- CTA ---------- */
+.cta{
+  background:linear-gradient(135deg,var(--peach) 0%,#FFE0C9 45%,var(--butter) 100%);
+  border-radius:36px;padding:56px 40px;text-align:center;position:relative;overflow:hidden;
+}
+.cta h2{font-size:clamp(24px,3.2vw,34px);font-weight:900;letter-spacing:-.04em}
+.cta p{margin:14px auto 28px;color:#7A5E4B;font-size:15px;max-width:480px}
+.cta-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cta::before,.cta::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.35)}
+.cta::before{width:220px;height:220px;left:-70px;top:-80px}
+.cta::after{width:160px;height:160px;right:-50px;bottom:-70px}
+
+/* ---------- 푸터 ---------- */
+.footer{background:#4A3F35;color:#E9DFD3;padding:60px 0 34px;margin-top:0}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.12)}
+.footer .logo{color:#FFF6E9;font-size:20px}
+.footer .logo small{color:#B9A794}
+.footer-desc{margin-top:16px;font-size:13.5px;color:#C0B0A0;line-height:1.8;max-width:330px}
+.footer h4{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#B9A794;margin-bottom:14px}
+.footer li{margin-bottom:9px;font-size:13.5px}
+.footer a:hover{color:var(--butter)}
+.footer-bottom{margin-top:6px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;color:#9C8B7A}
+.kakao-chip{display:inline-flex;align-items:center;gap:7px;background:#FEE500;color:#3C1E1E;padding:9px 16px;border-radius:999px;font-weight:800;font-size:13px}
+
+/* ---------- 플로팅 ---------- */
+.float{position:fixed;right:18px;bottom:18px;z-index:55;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.float-top{width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;box-shadow:var(--shadow-sm);font-size:16px;transition:.2s;opacity:0;pointer-events:none}
+.float-top.is-on{opacity:1;pointer-events:auto}
+.float-kakao{
+  display:flex;align-items:center;gap:9px;background:#FEE500;color:#3C1E1E;font-weight:800;font-size:14px;
+  padding:13px 20px;border-radius:999px;box-shadow:0 12px 30px rgba(190,170,0,.35);transition:.2s;
+}
+.float-kakao:hover{transform:translateY(-3px)}
+
+/* ---------- 모달 ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(74,63,53,.42);backdrop-filter:blur(3px);
+  z-index:90;opacity:0;pointer-events:none;transition:.25s;
+}
+.overlay.is-on{opacity:1;pointer-events:auto}
+.modal{
+  position:fixed;z-index:100;left:50%;top:50%;transform:translate(-50%,-46%) scale(.97);
+  width:min(1000px,calc(100% - 32px));max-height:calc(100vh - 48px);overflow:auto;
+  background:var(--cream-2);border-radius:30px;box-shadow:var(--shadow-lg);
+  opacity:0;pointer-events:none;transition:.28s cubic-bezier(.2,.7,.3,1);
+}
+.modal.is-on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.modal-grid{display:grid;grid-template-columns:1.02fr 1fr}
+.modal-media{background:#FBF3E8;position:relative;display:flex;flex-direction:column;min-height:320px;border-radius:30px 0 0 30px;overflow:hidden}
+.gal-stage{position:relative;flex:0 0 auto;width:100%;aspect-ratio:1/1;background:#fff}
+.gal-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
+.gal-nav{
+  position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,.92);box-shadow:var(--shadow-sm);display:grid;place-items:center;
+  font-size:22px;line-height:1;color:#7C6E62;z-index:2;transition:.15s;
+}
+.gal-nav:hover{background:#fff;color:var(--ink)}
+.gal-prev{left:10px}
+.gal-next{right:10px}
+.gal-nav[hidden]{display:none}
+.gal-count{
+  position:absolute;left:50%;bottom:10px;transform:translateX(-50%);z-index:2;
+  background:rgba(74,63,53,.7);color:#fff;font-size:11.5px;font-weight:800;
+  padding:4px 11px;border-radius:999px;letter-spacing:.02em;
+}
+.gal-count[hidden]{display:none}
+.gal-thumbs{display:flex;gap:7px;padding:10px;overflow-x:auto;background:#FBF3E8;scrollbar-width:thin}
+.gal-thumbs:empty{display:none}
+.gal-foot{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 16px 18px;text-align:center}
+.gal-word{display:block;font-size:clamp(20px,2.2vw,32px);font-weight:900;letter-spacing:.32em;text-transform:uppercase;color:#E6D6C3;line-height:1.2}
+.gal-note{display:block;font-size:11px;color:#B7A48F;font-weight:700;margin-top:7px;letter-spacing:-.01em}
+.gal-thumbs button{
+  flex:0 0 auto;width:56px;height:56px;border-radius:11px;overflow:hidden;border:2px solid transparent;
+  padding:0;background:#fff;opacity:.8;transition:.15s;
+}
+.gal-thumbs button:hover{opacity:1}
+.gal-thumbs button.is-on{border-color:var(--ink);opacity:1}
+.gal-thumbs img{width:100%;height:100%;object-fit:cover}
+.modal-info{padding:34px 34px 30px;display:flex;flex-direction:column;gap:12px}
+.modal-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.modal-cat{font-size:11.5px;font-weight:800;letter-spacing:.12em;color:#B8A492;text-transform:uppercase}
+.modal-info h3{font-size:23px;font-weight:850}
+.modal-desc{font-size:13.8px;color:#6E5E51;line-height:1.75}
+.modal-price{display:flex;align-items:baseline;gap:10px;margin-top:2px}
+.modal-price strong{font-size:24px;font-weight:900;letter-spacing:-.03em}
+.opt{margin-top:6px}
+.opt-label{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:9px;display:flex;gap:7px;align-items:center}
+.opt-label small{font-weight:600;color:#A99887;font-size:11.5px}
+.opt-row{display:flex;gap:7px;flex-wrap:wrap}
+.opt-btn{
+  min-width:52px;padding:9px 13px;border-radius:12px;background:#fff;border:1.5px solid var(--line);
+  font-size:13px;font-weight:700;color:var(--ink-soft);transition:.15s;
+}
+.opt-btn.is-on{border-color:var(--ink);background:var(--ink);color:#FFF6E9}
+.opt-btn:hover:not(.is-on){border-color:var(--peach)}
+.color-btn{display:flex;align-items:center;gap:7px}
+.color-btn i{width:14px;height:14px;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.qty{display:inline-flex;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+.qty button{width:38px;height:38px;font-size:16px;font-weight:700;color:var(--ink-soft)}
+.qty button:hover{background:var(--cream)}
+.qty span{min-width:34px;text-align:center;font-weight:800;font-size:14px}
+.modal-total{
+  display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;
+  border-top:1px dashed #EBDCCB;font-size:13.5px;color:var(--ink-soft);font-weight:700;
+}
+.modal-total b{font-size:20px;font-weight:900;color:var(--ink);letter-spacing:-.02em}
+.modal-actions{display:grid;gap:9px;margin-top:4px}
+.modal-close{
+  position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);
+  display:grid;place-items:center;font-size:17px;color:#7C6E62;box-shadow:var(--shadow-sm);z-index:5;
+}
+.modal-close:hover{background:#fff}
+.copy-note{font-size:11.5px;color:#A99887;text-align:center;line-height:1.6}
+
+/* 테테코 사이즈표 */
+.size-chart{background:#fff;border:1.5px dashed #CFE2D6;border-radius:14px;padding:11px 13px}
+.size-chart[hidden]{display:none}
+.size-chart-toggle{display:flex;align-items:center;gap:8px;width:100%;font-size:12.5px;font-weight:800;color:#4C775B;text-align:left}
+.size-chart-toggle .sct-ic{margin-left:auto;font-size:15px;color:#8FB39D;transition:.2s}
+.size-chart.is-open .sct-ic{transform:rotate(45deg)}
+.size-chart-body{margin-top:10px}
+.size-chart-body[hidden]{display:none}
+.size-chart-body img{width:100%;max-height:42vh;object-fit:contain;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:zoom-in}
+.size-chart-body p{font-size:11px;color:#9C8B7A;margin-top:7px;line-height:1.55}
+.chart-lightbox{
+  position:fixed;inset:0;z-index:120;background:rgba(48,40,33,.86);display:none;
+  align-items:center;justify-content:center;padding:18px;
+}
+.chart-lightbox.is-on{display:flex}
+.chart-lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:14px;background:#fff}
+.chart-lightbox button{
+  position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;background:#fff;
+  color:#5A4B3E;font-size:20px;line-height:1;display:grid;place-items:center;box-shadow:var(--shadow);
+}
+
+/* ---------- 장바구니 ---------- */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--cream-2);z-index:100;
+  transform:translateX(102%);transition:.32s cubic-bezier(.2,.7,.3,1);display:flex;flex-direction:column;
+  box-shadow:var(--shadow-lg);
+}
+.drawer.is-on{transform:none}
+.drawer-head{display:flex;align-items:center;gap:10px;padding:20px 22px;border-bottom:1px solid var(--line)}
+.drawer-head h3{font-size:17px;font-weight:850}
+.drawer-head button{margin-left:auto;font-size:20px;color:#A99887}
+.drawer-body{flex:1;overflow:auto;padding:18px 22px}
+.cart-empty{text-align:center;color:#B8A492;font-size:13.5px;padding:70px 10px;line-height:1.9}
+.cart-empty span{font-size:34px;display:block;margin-bottom:12px}
+.cart-item{display:flex;gap:13px;padding:14px 0;border-bottom:1px dashed #EFE2D2}
+.cart-item img{width:70px;height:88px;object-fit:cover;border-radius:12px;background:#FBF3E8;flex:0 0 auto}
+.ci-brand{margin-bottom:3px}
+.cart-item .ci-name{font-size:13.5px;font-weight:750;line-height:1.45}
+.cart-item .ci-opt{font-size:11.5px;color:#9C8B7A;margin-top:3px}
+.cart-item .ci-price{font-size:13.5px;font-weight:800;margin-top:6px}
+.ci-right{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.ci-del{font-size:11.5px;color:#B8A492;text-decoration:underline}
+.cart-foot{padding:18px 22px 22px;border-top:1px solid var(--line);background:#fff}
+.cart-total{display:flex;justify-content:space-between;font-size:14px;font-weight:750;margin-bottom:4px}
+.cart-total b{font-size:21px;font-weight:900;letter-spacing:-.03em}
+.cart-foot .hint{font-size:11.5px;color:#A99887;margin:6px 0 14px;line-height:1.6}
+.cart-foot .btn{margin-bottom:8px}
+
+/* ---------- 토스트 ---------- */
+.toast{
+  position:fixed;left:50%;bottom:34px;transform:translate(-50%,20px);z-index:200;
+  background:var(--ink);color:#FFF6E9;padding:13px 22px;border-radius:999px;font-size:13.5px;font-weight:700;
+  opacity:0;pointer-events:none;transition:.28s;box-shadow:var(--shadow);max-width:calc(100% - 40px);text-align:center;
+}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- 반응형 ---------- */
+@media (max-width:1024px){
+  .hero .wrap{min-height:min(560px,68vh)}
+  .brand-inner{gap:36px}
+  .steps{grid-template-columns:1fr 1fr}
+  .nav{display:none}
+}
+@media (max-width:820px){
+  .header .wrap{gap:12px}
+  .head-actions{margin-left:auto}
+  .hero .wrap{min-height:auto;padding-top:0;padding-bottom:40px}
+  .hero-bg{position:relative;inset:auto;height:300px;background-position:68% 60%}
+  .hero-bg::after{background:linear-gradient(180deg,rgba(255,249,240,0) 45%,rgba(255,249,240,.95) 92%,var(--cream-2) 100%)}
+  .hero .wrap{display:block;padding-top:0}
+  .hero-copy{max-width:560px;padding:26px 0 0;margin-top:-40px;position:relative;z-index:3}
+  .hero h1{font-size:clamp(32px,8.6vw,44px)}
+  .hero-sub{font-size:15px}
+  .brand-inner{grid-template-columns:1fr}
+  .brand-visual{order:-1}
+  .brand-photo{border-radius:28px;aspect-ratio:3/2}
+  .brand-note{left:12px;bottom:12px;max-width:220px;padding:13px 16px;font-size:12.5px}
+  .info-grid,.faq-wrap{grid-template-columns:1fr}
+  .brand-cards{grid-template-columns:1fr;gap:16px}
+  .modal-grid{grid-template-columns:1fr}
+  .modal-media{min-height:0;border-radius:26px 26px 0 0}
+  .modal{border-radius:26px}
+  .modal-info{padding:24px 22px 24px}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .sec{padding:64px 0}
+  .sec--tight{padding:52px 0}
+  .notice-bar .wrap{justify-content:flex-start;padding:8px 44px 8px 18px}
+  .notice-bar p{text-align:left;font-size:12px}
+  .grid{grid-template-columns:1fr 1fr;gap:14px}
+  .hero-bg{background-position:76% center}
+  .card{border-radius:20px}
+  .card-body{padding:12px 13px 14px;gap:5px}
+  .card-name{font-size:13.5px;line-height:1.4}
+  .card-cat{font-size:10px}
+  .brand-tag{font-size:10px;padding:3px 7px}
+  .price{font-size:15px}
+  .origin{font-size:11px}
+  .card-actions .btn{padding:10px 8px;font-size:12.5px}
+  .card-actions .btn--ghost{display:none}
+  .badge{top:10px;left:10px;font-size:10px;padding:5px 9px}
+  .card-shots{right:9px;bottom:9px;font-size:9.5px;padding:3px 7px}
+  .hero-actions .btn{flex:1}
+  .hero-tags{gap:12px}
+  .hero-tags div{font-size:12px}
+  .step{padding:20px 16px}
+  .info-card{padding:24px 20px}
+  .cta{padding:40px 22px;border-radius:28px}
+  .footer-top{grid-template-columns:1fr;gap:26px}
+  .footer{padding:44px 0 28px}
+  .float-kakao{padding:11px 16px;font-size:13px}
+  .filters{gap:7px;margin-bottom:26px}
+  .chip{padding:8px 14px;font-size:12.5px}
+  .brand-switch{gap:7px;margin-bottom:12px}
+  .bs-btn{padding:10px 15px;font-size:13px;gap:6px}
+  .bs-btn .bs-count{font-size:10.5px;padding:2px 6px}
+  .brand-intro{font-size:12px;margin-bottom:22px}
+  .modal{width:100%;max-width:none;left:0;top:auto;bottom:0;transform:translateY(100%);border-radius:26px 26px 0 0;max-height:92vh}
+  .modal.is-on{transform:translateY(0)}
+  .modal-media{border-radius:26px 26px 0 0}
+  .gal-thumbs button{width:50px;height:50px}
+  .gal-foot{display:none}
+  .sec-head{margin-bottom:30px}
+  .drawer{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+/* 스크롤 등장 */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.3,1)}
+.reveal.is-in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- 공지 바 -->
+<div class="notice-bar" id="noticeBar">
+  <div class="wrap">
+    <p>📦 <b>10만원 이상 무료배송</b> (제주 6,000원) · <b>세탁 전 불량 확인 필수</b></p>
+    <button class="notice-close" id="noticeClose" aria-label="공지 닫기">×</button>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<header class="header" id="header">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <span class="logo-mark">🧸</span>
+      <span>아이고마켓<small>IGOMARKET</small></span>
+    </a>
+    <nav class="nav">
+      <a href="#shop">전체 상품</a>
+      <a href="#brand">브랜드</a>
+      <a href="#guide">주문·배송</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="head-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="장바구니 열기">
+        🛍️
+        <span class="cart-count" id="cartCount" hidden>0</span>
+      </button>
+      <a class="btn btn--kakao btn--sm js-kakao" href="https://open.kakao.com/o/s1V7EXXi" target="_blank" rel="noopener" data-kakao>💬 카톡 주문</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- 히어로 -->
+  <section class="hero">
+    <div class="hero-bg" role="img" aria-label="파스텔 아동복과 곰돌이 인형이 놓인 포근한 배경"></div>
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">Merry go round · Teteco · 2026 겨울</span>
+        <h1>아이고,<br><em>예쁘다!</em></h1>
+        <p class="hero-sub">
+          엄마가 하나하나 골라 담은 <b>메리고라운드 34종</b>과 <b>테테코 45종</b>, 모두 79종.<br>
+          사진도, 색상도, 사이즈도 실제 상품 그대로 담았어요.<br>
+          마음에 드는 옷을 고르고 <b>카카오톡</b>으로 편하게 주문하세요.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="#shop">신상품 구경하기 →</a>
+          <a class="btn btn--ghost js-kakao" href="https://open.kakao.com/o/s1V7EXXi" target="_blank" rel="noopener" data-kakao>💬 카톡으로 문의</a>
+        </div>
+        <div class="hero-tags">
+          <div><span>❄️</span> 2026 겨울 신상 79종</div>
+          <div><span>📏</span> 메리고라운드 XS~2XL · 테테코 XS~XL</div>
+          <div><span>💌</span> 카톡 1:1 상담</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 띠 배너 -->
+  <div class="strip" aria-hidden="true">
+    <div class="strip-track">
+      <span>10만원 이상 무료배송 (제주 6,000원)</span><span>세일·신상 평일 기준 7~14일 (리오더 최대 한달+)</span><span>세탁 전 불량 확인 필수</span><span>수령 후 2일 이내 카톡 CS</span>
+      <span>10만원 이상 무료배송 (제주 6,000원)</span><span>세일·신상 평일 기준 7~14일 (리오더 최대 한달+)</span><span>세탁 전 불량 확인 필수</span><span>수령 후 2일 이내 카톡 CS</span>
+      <span>10만원 이상 무료배송 (제주 6,000원)</span><span>세일·신상 평일 기준 7~14일 (리오더 최대 한달+)</span><span>세탁 전 불량 확인 필수</span><span>수령 후 2일 이내 카톡 CS</span>
+      <span>10만원 이상 무료배송 (제주 6,000원)</span><span>세일·신상 평일 기준 7~14일 (리오더 최대 한달+)</span><span>세탁 전 불량 확인 필수</span><span>수령 후 2일 이내 카톡 CS</span>
+    </div>
+  </div>
+
+  <!-- 상품 -->
+  <section class="sec" id="shop">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow" id="shopEyebrow">Our picks</span>
+        <h2 id="shopTitle">메리고라운드 · 테테코 79종</h2>
+        <p id="shopDesc">두 브랜드 79종을 한 곳에 담았어요. 브랜드를 고르면 그 브랜드 상품만, 카테고리를 고르면 그 안에서 다시 골라 볼 수 있어요.</p>
+      </div>
+
+      <!-- 브랜드 전환 탭 -->
+      <div class="brand-switch reveal" id="brandSwitch" role="tablist" aria-label="브랜드 선택"></div>
+      <p class="brand-intro reveal" id="brandIntro"></p>
+
+      <!-- 카테고리 -->
+      <div class="filters reveal" id="filters"></div>
+      <div class="grid" id="grid"></div>
+      <div class="more-wrap" id="moreWrap"></div>
+    </div>
+  </section>
+
+  <!-- 브랜드 소개 -->
+  <section class="sec brand" id="brand">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Two brands</span>
+        <h2>아이고마켓에는 두 브랜드가 있어요</h2>
+        <p>메리고라운드는 폭넓은 사이즈(XS~2XL)로 자매·남매 옷을 맞추기 좋고, 테테코는 상세 사진과 사이즈표를 넉넉히 담은 실속 구성이에요. 원하는 브랜드만 모아서 보세요.</p>
+      </div>
+
+      <div class="brand-cards">
+        <article class="brand-card brand-card--merry reveal">
+          <div class="bc-photo"><img src="assets/merry/web/48149.jpg" alt="메리고라운드 2026 겨울 아동복" loading="lazy"></div>
+          <div class="bc-body">
+            <span class="brand-tag brand-tag--merry">메리고라운드</span>
+            <h3>메리고라운드 2026 겨울</h3>
+            <p>피치스판·골지·패딩·벨벳까지, 등원룩으로 매일 손이 가는 34종. 아이 옆에서 바로 확인한 실제 색상과 사이즈로 담았어요.</p>
+            <ul class="bc-meta"><li>34종</li><li>XS ~ 2XL</li><li>8,000원 ~ 60,800원</li></ul>
+            <button class="btn btn--ghost js-brand" data-brand="merry">메리고라운드만 보기 →</button>
+          </div>
+        </article>
+        <article class="brand-card brand-card--teteco reveal">
+          <div class="bc-photo"><img src="assets/teteco/21/1_1.jpg" alt="테테코 겨울 아동복" loading="lazy"></div>
+          <div class="bc-body">
+            <span class="brand-tag brand-tag--teteco">테테코</span>
+            <h3>테테코 겨울</h3>
+            <p>6,500원부터 시작하는 실속 라인 45종. 상품마다 상세 사진을 최대 15장까지 담아서, 받기 전에 원단과 핏을 미리 확인할 수 있어요.</p>
+            <ul class="bc-meta"><li>45종</li><li>XS ~ XL</li><li>6,500원 ~ 39,000원</li></ul>
+            <button class="btn btn--ghost js-brand" data-brand="teteco">테테코만 보기 →</button>
+          </div>
+        </article>
+      </div>
+
+      <div class="brand-inner">
+        <div class="brand-copy reveal">
+          <span class="eyebrow">Brand story</span>
+          <h2 style="margin-top:16px">아이 옷은,<br><span>입는 사람이 편해야</span> 하니까요.</h2>
+          <p>아이고마켓은 아이를 키우는 엄마가 직접 고르고 직접 포장하는 작은 아동복 마켓입니다. 화려한 브랜드보다 <b>매일 손이 가는 옷</b>을 고릅니다. 목이 조이지 않는 넥라인, 세탁해도 보송한 소재, 아이가 스스로 입기 쉬운 디테일까지 하나씩 확인했어요.</p>
+          <p>사진 한 장, 문구 하나도 정성껏 준비합니다. 주문은 카카오톡으로 편하게 남겨 주시면, 하나하나 확인해서 답장드려요.</p>
+          <ul class="brand-points">
+            <li><span class="ic">🌿</span><div><b>아이 피부 먼저 생각한 소재</b><small>KC 인증 원단과 부드러운 안감, 옷깃의 거친 마감까지 확인합니다.</small></div></li>
+            <li><span class="ic">📦</span><div><b>한 벌씩 직접 포장</b><small>주문서를 보고 하나씩 검수하고, 보송하게 포장해 보내 드려요.</small></div></li>
+            <li><span class="ic">💬</span><div><b>사이즈는 카톡으로 상담</b><small>키와 몸무게를 알려 주시면 딱 맞는 사이즈를 추천해 드립니다.</small></div></li>
+          </ul>
+        </div>
+        <div class="brand-visual reveal">
+          <div class="brand-photo"><img src="assets/brand-web.jpg" alt="메리고라운드 2026 겨울 아동복을 입은 아이" loading="lazy"></div>
+          <div class="brand-note">🧸 메리고라운드 · 테테코<span>79종 실사진 · 실제 색상/사이즈로 만나보세요</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 주문·배송 안내 -->
+  <section class="sec sec--tight" id="guide">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">How to order</span>
+        <h2>주문은 이렇게!</h2>
+        <p>복잡한 회원가입 없이, 카톡으로 3분이면 끝나요.</p>
+      </div>
+      <div class="steps reveal">
+        <div class="step"><div class="step-num">1</div><h4>상품 고르기</h4><p>마음에 드는 옷을 눌러 사이즈와 색상을 선택하고 장바구니에 담아 주세요.</p></div>
+        <div class="step"><div class="step-num">2</div><h4>주문서 복사</h4><p>장바구니의 ‘주문서 복사’를 누르면 주문 내용이 한 번에 복사돼요.</p></div>
+        <div class="step"><div class="step-num">3</div><h4>카톡으로 전송</h4><p>복사한 내용을 카카오톡 채팅창에 붙여넣기만 하면 주문이 끝나요.</p></div>
+        <div class="step"><div class="step-num">4</div><h4>입금·발송</h4><p>아래 계좌로 입금해 주시면 확인 후 순서대로 발송해 드려요. 세일·신상은 평일 기준 7~14일 걸려요.</p></div>
+      </div>
+      <div class="info-grid">
+        <div class="info-card reveal">
+          <h3>🚚 배송·입금 안내</h3>
+          <div class="pay-box">
+            <span>💳 입금 계좌</span>
+            <b>신한 110-206-046646</b>
+            <small>예금주 한수연 · 입금 확인 후 순서대로 발송해 드려요</small>
+          </div>
+          <table class="delivery-table">
+            <tr><th>배송 방법</th><td>택배 (CJ대한통운 / 우체국택배)</td></tr>
+            <tr><th>배송비</th><td>3,000원 · 제주 6,000원 · <b>10만원 이상 무료배송</b></td></tr>
+            <tr><th>공구 상품</th><td>위탁 발송이라 단톡방·주문 합배가 되지 않아요. 품목마다 배송비 3,000원(제주 6,000원)이 따로 붙습니다.</td></tr>
+            <tr><th>배송 기간</th><td>세일·신상 평일 기준 7~14일 (리오더 시 최대 한 달 이상)<br>공구건 기본 배송 4주 + 추가 리오더 7~14일 (약 1개월~1개월 반)</td></tr>
+            <tr><th>품절 안내</th><td>재고가 품절되면 한 장만 나와도 발송돼요 (취소 불가). 신상도 업체 사정에 따라 품절될 수 있어요.</td></tr>
+            <tr><th>포장</th><td>재사용 가능한 파스텔 포장으로 보내 드려요</td></tr>
+          </table>
+        </div>
+        <div class="info-card reveal">
+          <h3>💛 교환·환불·반품 안내</h3>
+          <ul class="info-list">
+            <li><b>CS 기간</b><span>택배 받으신 뒤 <b>2일(이틀) 이내</b>에 사진 첨부해서 카톡으로 연락 주셔야 처리돼요. 기간이 지나면 처리가 어려워요.</span></li>
+            <li><b>세탁 전</b>불량은 꼭 세탁 전에 확인해 주세요. 세탁 후 발견된 불량·사이즈 오배송은 어떤 상품도 처리할 수 없어요.</li>
+            <li><b>불가 안내</b>단순변심, 리오더 기간으로 인한 교환·환불은 불가해요. 미리 고지드린 부분이니 주문 전 꼭 확인해 주세요.</li>
+            <li><b>미세 불량</b>세일 특성상 미세 오염·미세 불량은 교환·환불이 어려워요 (큰 오염은 가능).</li>
+            <li><b>재단·색상</b>같은 상품도 재단에 따라 기장·디테일이 조금 다를 수 있고, 화질·촬영 장소·보정에 따라 화면과 실물이 다를 수 있어요. 이는 불량이 아니에요.</li>
+            <li><b>세탁 방법</b>자켓류는 드라이클리닝 필수, 세탁기 가능한 상품은 단독 찬물 세탁, 건조기는 사용하지 마세요.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 공지 & FAQ -->
+  <section class="sec sec--tight" id="faq" style="background:#FDF6EC">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Help</span>
+        <h2>공지 &amp; 자주 묻는 질문</h2>
+        <p>궁금한 점은 카톡으로 편하게 물어보세요. 평일 10:00–18:00에 답장드려요.</p>
+      </div>
+      <div class="faq-wrap">
+        <div class="faq-col reveal">
+          <h3>💬 자주 묻는 질문</h3>
+          <details open>
+            <summary><span class="q">Q</span>사이즈는 어떻게 고르면 되나요?</summary>
+            <p>브랜드마다 사이즈가 조금 달라요. <b>메리고라운드는 XS ~ 2XL</b>(상품마다 준비된 사이즈가 다르고, 헤어밴드는 S·M), <b>테테코는 XS ~ XL</b> 5단계입니다. 카드에 표시된 사이즈가 그 상품에 실제로 있는 사이즈예요. 테테코 상품 사진을 누르면 모달 안에서 <b>테테코 사이즈표(나이·키·몸무게)</b>를 바로 볼 수 있고, 키·몸무게를 카톡으로 알려 주시면 딱 맞게 추천해 드려요.</p>
+          </details>
+          <details>
+            <summary><span class="q">Q</span>테테코 사이즈표를 보여 주세요.</summary>
+            <table class="faq-size-table">
+              <tr><th>사이즈</th><th>나이</th><th>키</th><th>몸무게</th></tr>
+              <tr><td>XS</td><td>~24개월</td><td>75~85cm</td><td>~10kg</td></tr>
+              <tr><td>S</td><td>2~3세</td><td>85~95cm</td><td>10~14kg</td></tr>
+              <tr><td>M</td><td>3~4세</td><td>95~105cm</td><td>15~17kg</td></tr>
+              <tr><td>L</td><td>4~5세</td><td>105~115cm</td><td>17~20kg</td></tr>
+              <tr><td>XL</td><td>5~6세</td><td>115~125cm</td><td>20~25kg</td></tr>
+            </table>
+            <p class="faq-size-foot">아이의 체형이나 의류의 핏감에 따라 차이가 있을 수 있어요. 기준 사이즈표이니 참고용으로만 봐주세요!</p>
+          </details>
+          <details>
+            <summary><span class="q">Q</span>브랜드를 따로 모아서 볼 수 있나요?</summary>
+            <p>상품 목록 위의 <b>브랜드 탭</b>에서 ‘메리고라운드(34)’나 ‘테테코(45)’를 누르면 그 브랜드 상품만 따로 볼 수 있어요. 그 아래 카테고리(상의·하의·원피스·상하세트·아우터·잡화)를 고르면 브랜드 안에서 다시 나눠 볼 수 있습니다.</p>
+          </details>
+          <details>
+            <summary><span class="q">Q</span>주문은 어떻게 하나요?</summary>
+            <p>상품을 눌러 사이즈·색상을 고른 뒤 장바구니에서 <b>‘주문서 복사’</b>를 누르면 주문 내용이 복사돼요. 그 내용을 카카오톡 채팅창에 붙여넣고, 입금 계좌로 결제해 주시면 돼요.</p>
+          </details>
+          <details>
+            <summary><span class="q">Q</span>배송은 얼마나 걸리나요?</summary>
+            <p>세일·신상은 평일 기준 <b>7~14일</b>, 재고가 부족해 리오더가 들어가면 <b>최대 한 달 이상</b> 걸릴 수 있어요. 공구건은 기본 배송 평일 기준 4주에 추가 리오더 7~14일이 붙어 대략 한 달~한 달 반 정도 생각해 주시면 돼요. 아동복은 리오더가 길어 한 시즌 빨리 시작하니 넉넉하게 기다려 주세요.</p>
+          </details>
+          <details>
+            <summary><span class="q">Q</span>입금 계좌를 알려 주세요.</summary>
+            <p><b>신한 110-206-046646 (예금주 한수연)</b>으로 입금해 주시면 돼요. 입금 확인 후 순서대로 발송해 드려요. 배송비는 3,000원(제주 6,000원), 10만원 이상이면 무료예요.</p>
+          </details>
+          <details>
+            <summary><span class="q">Q</span>세탁은 어떻게 해야 하나요?</summary>
+            <p>세탁 방법은 상품마다 달라요. 자켓류는 드라이클리닝이 필수이고, 세탁기 가능한 상품은 단독으로 찬물 세탁해 주세요. 건조기는 절대 추천하지 않아요. 세탁 전에 불량 여부를 꼭 먼저 확인해 주세요.</p>
+          </details>
+          <details>
+            <summary><span class="q">Q</span>교환·환불은 어떻게 되나요?</summary>
+            <p>택배 받으신 뒤 <b>2일(이틀) 이내</b>에 사진을 첨부해 카톡으로 연락 주시면 처리해 드려요. 기간이 지나면 처리가 어려워요. 세탁 후 발견된 불량·사이즈 오배송은 어떤 상품도 처리되지 않으니 <b>세탁 전 불량 확인</b>을 꼭 해 주세요. 단순변심이나 리오더 기간으로 인한 교환·환불은 미리 고지된 부분이라 어려워요.</p>
+          </details>
+          <details>
+            <summary><span class="q">Q</span>공구 상품도 같이 보내 주실 수 있나요?</summary>
+            <p>공구 상품은 위탁 발송이라 단톡방이나 다른 주문과 합배가 되지 않아요. 품목마다 배송비 3,000원(제주 6,000원)이 따로 붙습니다.</p>
+          </details>
+        </div>
+        <div class="faq-col reveal">
+          <h3>📢 공지사항</h3>
+          <ul class="notice-list">
+            <li><time>11.20</time><span>메리고라운드 34종 · 테테코 45종, 모두 79종 입고 · 세일·신상 배송은 평일 기준 7~14일 걸려요</span></li>
+            <li><time>11.20</time><span>테테코 상품은 상세 사진을 최대 15장까지 담았어요. 사진을 넘겨 보며 원단과 핏을 확인해 주세요</span></li>
+            <li><time>11.18</time><span>상품마다 색상·사이즈 구성이 달라요. 상품 사진을 눌러 실제 옵션을 확인해 주세요</span></li>
+            <li><time>11.15</time><span>공구 상품은 위탁 발송이라 합배가 되지 않고, 품목마다 배송비 3,000원(제주 6,000원)이 붙어요</span></li>
+            <li><time>11.10</time><span>카톡 주문서에 받는 분 휴대폰 번호를 꼭 적어 주세요 (배송 안내용)</span></li>
+          </ul>
+          <div class="info-card" style="margin-top:18px;background:#FFFDF8">
+            <h3>🕒 고객센터</h3>
+            <ul class="info-list">
+              <li><b>운영 시간</b>평일 10:00 – 18:00 (점심 12:30–13:30)</li>
+              <li><b>문의</b><span><a class="js-kakao" href="https://open.kakao.com/o/s1V7EXXi" target="_blank" rel="noopener" data-kakao style="font-weight:800;color:#8A6A4E;text-decoration:underline;text-underline-offset:2px">카카오톡 오픈채팅방 열기</a></span></li>
+              <li><b>입금 계좌</b>신한 110-206-046646 (예금주 한수연)</li>
+              <li><b>CS 안내</b>수령 후 2일 이내 사진 첨부해 카톡 주세요</li>
+              <li><b>휴무</b>주말·공휴일은 답장이 늦어질 수 있어요</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta reveal" style="margin-top:56px">
+        <h2>오늘, 아이 옷 한 벌 어떠세요?</h2>
+        <p>사이즈가 고민되면 키와 몸무게만 알려 주세요. 카톡에서 바로 추천해 드릴게요.</p>
+        <div class="cta-actions">
+          <a class="btn btn--kakao js-kakao" href="https://open.kakao.com/o/s1V7EXXi" target="_blank" rel="noopener" data-kakao>💬 카카오톡으로 주문하기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- 푸터 -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <a class="logo" href="#top"><span class="logo-mark">🧸</span><span>아이고마켓<small>IGOMARKET</small></span></a>
+        <p class="footer-desc">엄마가 고르고 엄마가 포장하는, 포근한 파스텔 아동복 마켓. 아이의 하루가 조금 더 편안해지도록.</p>
+        <p style="margin-top:16px"><a class="kakao-chip js-kakao" href="https://open.kakao.com/o/s1V7EXXi" target="_blank" rel="noopener" data-kakao>💬 카카오톡 오픈채팅</a></p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#shop" class="js-brand" data-brand="all">전체 79종</a></li>
+          <li><a href="#shop" class="js-brand" data-brand="merry">메리고라운드 34종</a></li>
+          <li><a href="#shop" class="js-brand" data-brand="teteco">테테코 45종</a></li>
+          <li><a href="#shop" class="js-brand" data-brand="all" data-cat="상의">상의</a></li>
+          <li><a href="#shop" class="js-brand" data-brand="all" data-cat="하의">하의</a></li>
+          <li><a href="#shop" class="js-brand" data-brand="all" data-cat="상하세트">상하세트</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#guide">주문·배송 안내</a></li>
+          <li><a href="#guide">교환·반품 안내</a></li>
+          <li><a href="#faq">자주 묻는 질문</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 IGOMARKET. All rights reserved.</span>
+      <span>개인정보처리방침 · 이용약관 (링크 연결 예정)</span>
+    </div>
+  </div>
+</footer>
+
+<!-- 플로팅 -->
+<div class="float">
+  <button class="float-top" id="toTop" aria-label="맨 위로">↑</button>
+  <a class="float-kakao js-kakao" href="https://open.kakao.com/o/s1V7EXXi" target="_blank" rel="noopener" data-kakao>💬 카톡 주문</a>
+</div>
+
+<!-- 오버레이 -->
+<div class="overlay" id="overlay"></div>
+
+<!-- 상품 모달 -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <button class="modal-close" id="modalClose" aria-label="닫기">×</button>
+  <div class="modal-grid">
+    <div class="modal-media">
+      <div class="gal-stage">
+        <img id="modalImg" src="" alt="" decoding="async">
+        <button class="gal-nav gal-prev" id="galPrev" aria-label="이전 사진">‹</button>
+        <button class="gal-nav gal-next" id="galNext" aria-label="다음 사진">›</button>
+        <span class="gal-count" id="galCount" hidden>1 / 1</span>
+      </div>
+      <div class="gal-thumbs" id="galThumbs" aria-label="상세 사진 목록"></div>
+      <div class="gal-foot">
+        <span class="gal-word" id="galWord">teteco</span>
+        <span class="gal-note" id="galNote"></span>
+      </div>
+    </div>
+    <div class="modal-info">
+      <div class="modal-meta">
+        <span class="brand-tag" id="modalBrand"></span>
+        <span class="modal-cat" id="modalCat"></span>
+      </div>
+      <h3 id="modalTitle"></h3>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-price">
+        <strong id="modalPrice"></strong>
+        <span class="origin" id="modalOrigin"></span>
+        <span class="price-off" id="modalOff"></span>
+      </div>
+      <div class="opt">
+        <div class="opt-label">사이즈 <small id="sizeHint">아이 나이·키를 모르면 카톡으로 문의하세요</small></div>
+        <div class="opt-row" id="sizeRow"></div>
+        <div class="size-chart" id="sizeChartBox" hidden>
+          <button type="button" class="size-chart-toggle" id="sizeChartToggle" aria-expanded="false">
+            <span>📏 테테코 사이즈표 보기</span><span class="sct-ic">＋</span>
+          </button>
+          <div class="size-chart-body" id="sizeChartBody" hidden>
+            <img data-src="assets/teteco/size-chart.jpg" alt="테테코 사이즈표 — XS~XL 나이·키·몸무게">
+            <p>아이의 체형이나 의류의 핏감에 따라 차이가 있을 수 있어요. 기준 사이즈표이니 참고용으로만 봐주세요!</p>
+          </div>
+        </div>
+      </div>
+      <div class="opt">
+        <div class="opt-label">색상</div>
+        <div class="opt-row" id="colorRow"></div>
+      </div>
+      <div class="opt" style="display:flex;align-items:center;justify-content:space-between">
+        <div class="opt-label" style="margin:0">수량</div>
+        <div class="qty">
+          <button id="qMinus" aria-label="수량 줄이기">−</button>
+          <span id="qNum">1</span>
+          <button id="qPlus" aria-label="수량 늘리기">+</button>
+        </div>
+      </div>
+      <div class="modal-total"><span>주문 금액</span><b id="modalTotal">0원</b></div>
+      <div class="modal-actions">
+        <button class="btn btn--primary btn--wide" id="addCart">🛍️ 장바구니 담기</button>
+        <button class="btn btn--kakao" id="orderKakao">💬 카톡 주문</button>
+        <p class="copy-note">‘카톡 주문’을 누르면 주문 문구가 복사되고 카카오톡 오픈채팅방으로 이동해요.<br>채팅창에 붙여넣기만 하면 주문 끝!</p>
+        <p class="copy-note" style="color:#8A6A4E;font-weight:700;background:#FFF4DC;border:1px solid #F4E2CB;border-radius:12px;padding:8px 10px;margin:0">입금 계좌 · 신한 110-206-046646 (한수연)</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 사이즈표 크게 보기 -->
+<div class="chart-lightbox" id="chartLightbox" role="dialog" aria-label="테테코 사이즈표 크게 보기">
+  <button id="chartLightboxClose" aria-label="닫기">×</button>
+  <img src="assets/teteco/size-chart.jpg" alt="테테코 사이즈표 — XS~XL 나이·키·몸무게" loading="lazy">
+</div>
+
+<!-- 장바구니 -->
+<aside class="drawer" id="drawer" aria-label="장바구니">
+  <div class="drawer-head">
+    <h3>🛍️ 주문 바구니</h3>
+    <button id="drawerClose" aria-label="닫기">×</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>총 주문 금액</span><b id="cartTotal">0원</b></div>
+    <p class="hint">배송비 3,000원 · 제주 6,000원 · 10만원 이상 무료배송<br>입금 계좌: 신한 110-206-046646 (한수연)<br>세일·신상은 평일 기준 7~14일 걸려요 (결제 금액은 카톡에서 최종 안내드려요)</p>
+    <button class="btn btn--primary btn--wide" id="copyAll">📋 주문서 복사하기</button>
+    <button class="btn btn--kakao btn--wide" id="cartKakao">💬 카톡 주문</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   ★ 1. 주문 링크 — 아이고마켓 카카오톡 오픈채팅방
+   ---------------------------------------------------------
+   이 주소 하나로 사이트의 모든 주문·문의 버튼이 연결됩니다.
+   오픈채팅방 주소가 바뀌면 이 줄만 고치면 됩니다.
+   ========================================================= */
+const KAKAO_URL = "https://open.kakao.com/o/s1V7EXXi";
+
+/* ★ 2. 상품 정보
+   build.py 가 src/products.json(메리고라운드) + src/teteco.json(테테코) 을 합쳐
+   아래 상품 배열 자리에 그대로 넣습니다. 사진은 assets/ 아래 상대 경로입니다. */
+const PRODUCTS = [
+  {id:"m48149",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"피치스판프릴티",price:22400,origin:0,desc:"피치스판프릴티 · 메리고라운드 2026 겨울. 색상 4가지(아이·레몬·소라·메란지), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["아이","레몬","소라","메란지"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48149.jpg",imgs:["assets/merry/web/48149.jpg"],thumbs:[]},
+  {id:"m48148",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"포그니도트부츠컷",price:20800,origin:0,desc:"포그니도트부츠컷 · 메리고라운드 2026 겨울. 색상 2가지(크림·메란지), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["크림","메란지"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48148.jpg",imgs:["assets/merry/web/48148.jpg"],thumbs:[]},
+  {id:"m48147",brand:"merry",brandName:"메리고라운드",cat:"잡화",name:"퍼헤어밴드",price:8000,origin:0,desc:"퍼헤어밴드 · 메리고라운드 2026 겨울. 색상 3가지(크림·연그린·핑크), 사이즈 S·M. 겨울 코디에 포인트로 더하기 좋은 소품이에요.",colors:["크림","연그린","핑크"],sizes:["S","M"],img:"assets/merry/web/48147.jpg",imgs:["assets/merry/web/48147.jpg"],thumbs:[]},
+  {id:"m48146",brand:"merry",brandName:"메리고라운드",cat:"아우터",name:"퍼조끼",price:20800,origin:0,desc:"퍼조끼 · 메리고라운드 2026 겨울. 색상 3가지(크림·연그린·핑크), 사이즈 XS·S·M·L·XL·2XL. 겨울에 한 겹 더 챙기기 좋은 아우터예요.",colors:["크림","연그린","핑크"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48146.jpg",imgs:["assets/merry/web/48146.jpg"],thumbs:[]},
+  {id:"m48145",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"패딩치마레깅스",price:25600,origin:0,desc:"패딩치마레깅스 · 메리고라운드 2026 겨울. 색상 2가지(베이지·네이비), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["베이지","네이비"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48145.jpg",imgs:["assets/merry/web/48145.jpg"],thumbs:[]},
+  {id:"m48144",brand:"merry",brandName:"메리고라운드",cat:"원피스",name:"패딩리본원피스",price:36800,origin:0,desc:"패딩리본원피스 · 메리고라운드 2026 겨울. 색상 2가지(레드·핑크), 사이즈 XS·S·M·L. 한 벌만 입어도 코디가 되는 원피스예요.",colors:["레드","핑크"],sizes:["XS","S","M","L"],img:"assets/merry/web/48144.jpg",imgs:["assets/merry/web/48144.jpg"],thumbs:[]},
+  {id:"m48143",brand:"merry",brandName:"메리고라운드",cat:"아우터",name:"패딩리본나시",price:30400,origin:0,desc:"패딩리본나시 · 메리고라운드 2026 겨울. 색상 2가지(레드·핑크), 사이즈 XS·S·M·L. 겨울에 한 겹 더 챙기기 좋은 아우터예요.",colors:["레드","핑크"],sizes:["XS","S","M","L"],img:"assets/merry/web/48143.jpg",imgs:["assets/merry/web/48143.jpg"],thumbs:[]},
+  {id:"m48142",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"코지조거바지",price:25600,origin:0,desc:"코지조거바지 · 메리고라운드 2026 겨울. 색상 4가지(스트라이프핑크·스트라이프먹색·도트그레이·도트네이비), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["스트라이프핑크","스트라이프먹색","도트그레이","도트네이비"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48142.jpg",imgs:["assets/merry/web/48142.jpg"],thumbs:[]},
+  {id:"m48141",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"케이크맨투맨",price:27200,origin:0,desc:"케이크맨투맨 · 메리고라운드 2026 겨울. 색상 2가지(크림·레드), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["크림","레드"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48141.jpg",imgs:["assets/merry/web/48141.jpg"],thumbs:[]},
+  {id:"m48140",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"칙촉후디",price:22400,origin:0,desc:"칙촉후디 · 메리고라운드 2026 겨울. 색상 2가지(브라운·메란지), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["브라운","메란지"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48140.jpg",imgs:["assets/merry/web/48140.jpg"],thumbs:[]},
+  {id:"m48139",brand:"merry",brandName:"메리고라운드",cat:"원피스",name:"체크맨투맨원피스",price:44800,origin:0,desc:"체크맨투맨원피스 · 메리고라운드 2026 겨울. 색상 2가지(와인·네이비), 사이즈 XS·S·M·L·XL·2XL. 한 벌만 입어도 코디가 되는 원피스예요.",colors:["와인","네이비"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48139.jpg",imgs:["assets/merry/web/48139.jpg"],thumbs:[]},
+  {id:"m48138",brand:"merry",brandName:"메리고라운드",cat:"상하세트",name:"윈터후리스세트",price:40000,origin:0,desc:"윈터후리스세트 · 메리고라운드 2026 겨울. 색상 2가지(핑크·브라운), 사이즈 XS·S·M·L·XL·2XL. 위아래를 한 번에 맞춰 입는 세트예요.",colors:["핑크","브라운"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48138.jpg",imgs:["assets/merry/web/48138.jpg"],thumbs:[]},
+  {id:"m48137",brand:"merry",brandName:"메리고라운드",cat:"상하세트",name:"윈터나시세트",price:27200,origin:0,desc:"윈터나시세트 · 메리고라운드 2026 겨울. 색상 4가지(그린·먹색·핑크·라임), 사이즈 XS·S·M·L·XL·2XL. 위아래를 한 번에 맞춰 입는 세트예요.",colors:["그린","먹색","핑크","라임"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48137.jpg",imgs:["assets/merry/web/48137.jpg"],thumbs:[]},
+  {id:"m48136",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"스트라이프폴라프릴티",price:24000,origin:0,desc:"스트라이프폴라프릴티 · 메리고라운드 2026 겨울. 색상 3가지(아이·블랙·그레이), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["아이","블랙","그레이"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48136.jpg",imgs:["assets/merry/web/48136.jpg"],thumbs:[]},
+  {id:"m48135",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"스노우맨투맨",price:24000,origin:0,desc:"스노우맨투맨 · 메리고라운드 2026 겨울. 색상 3가지(핑크·레드·소라), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["핑크","레드","소라"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48135.jpg",imgs:["assets/merry/web/48135.jpg"],thumbs:[]},
+  {id:"m48134",brand:"merry",brandName:"메리고라운드",cat:"상하세트",name:"뽀송이스커트부츠컷세트",price:46400,origin:0,desc:"뽀송이스커트부츠컷세트 · 메리고라운드 2026 겨울. 색상 3가지(메란지·퍼플·진핑크), 사이즈 XS·S·M·L·XL·2XL. 위아래를 한 번에 맞춰 입는 세트예요.",colors:["메란지","퍼플","진핑크"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48134.jpg",imgs:["assets/merry/web/48134.jpg"],thumbs:[]},
+  {id:"m48133",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"블링도트스커트바지",price:36800,origin:0,desc:"블링도트스커트바지 · 메리고라운드 2026 겨울. 색상 2가지(메란지·먹색), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["메란지","먹색"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48133.jpg",imgs:["assets/merry/web/48133.jpg"],thumbs:[]},
+  {id:"m48132",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"본딩와이드데님",price:41600,origin:0,desc:"본딩와이드데님 · 메리고라운드 2026 겨울. 색상 2가지(진청·연청), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["진청","연청"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48132.jpg",imgs:["assets/merry/web/48132.jpg"],thumbs:[]},
+  {id:"m48131",brand:"merry",brandName:"메리고라운드",cat:"원피스",name:"벨벳원피스",price:27200,origin:0,desc:"벨벳원피스 · 메리고라운드 2026 겨울. 색상 4가지(레드·크림·연보라·블랙), 사이즈 XS·S·M·L·XL·2XL. 한 벌만 입어도 코디가 되는 원피스예요.",colors:["레드","크림","연보라","블랙"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48131.jpg",imgs:["assets/merry/web/48131.jpg"],thumbs:[]},
+  {id:"m48130",brand:"merry",brandName:"메리고라운드",cat:"아우터",name:"벨로아뷔스티에",price:20800,origin:0,desc:"벨로아뷔스티에 · 메리고라운드 2026 겨울. 색상 2가지(크림·블루), 사이즈 XS·S·M·L·XL·2XL. 겨울에 한 겹 더 챙기기 좋은 아우터예요.",colors:["크림","블루"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48130.jpg",imgs:["assets/merry/web/48130.jpg"],thumbs:[]},
+  {id:"m48129",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"배색조거바지",price:28800,origin:0,desc:"배색조거바지 · 메리고라운드 2026 겨울. 색상 2가지(퍼플·먹색), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["퍼플","먹색"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48129.jpg",imgs:["assets/merry/web/48129.jpg"],thumbs:[]},
+  {id:"m48128",brand:"merry",brandName:"메리고라운드",cat:"상하세트",name:"말랑부츠컷세트",price:32000,origin:0,desc:"말랑부츠컷세트 · 메리고라운드 2026 겨울. 색상 3가지(베이지·소라·핑크), 사이즈 XS·S·M·L·XL·2XL. 위아래를 한 번에 맞춰 입는 세트예요.",colors:["베이지","소라","핑크"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48128.jpg",imgs:["assets/merry/web/48128.jpg"],thumbs:[]},
+  {id:"m48127",brand:"merry",brandName:"메리고라운드",cat:"아우터",name:"마시멜로가디건",price:27200,origin:0,desc:"마시멜로가디건 · 메리고라운드 2026 겨울. 색상 3가지(아이·퍼플·그린), 사이즈 XS·S·M·L·XL·2XL. 겨울에 한 겹 더 챙기기 좋은 아우터예요.",colors:["아이","퍼플","그린"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48127.jpg",imgs:["assets/merry/web/48127.jpg"],thumbs:[]},
+  {id:"m48126",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"돌리리본맨투맨",price:28800,origin:0,desc:"돌리리본맨투맨 · 메리고라운드 2026 겨울. 색상 3가지(아이·메란지·퍼플), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["아이","메란지","퍼플"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48126.jpg",imgs:["assets/merry/web/48126.jpg"],thumbs:[]},
+  {id:"m48125",brand:"merry",brandName:"메리고라운드",cat:"아우터",name:"덤블양면조끼",price:60800,origin:0,desc:"덤블양면조끼 · 메리고라운드 2026 겨울. 색상 3가지(퍼플·네이비·크림), 사이즈 XS·S·M·L·XL·2XL. 겨울에 한 겹 더 챙기기 좋은 아우터예요.",colors:["퍼플","네이비","크림"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48125.jpg",imgs:["assets/merry/web/48125.jpg"],thumbs:[]},
+  {id:"m48124",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"덤블배색맨투맨",price:24000,origin:0,desc:"덤블배색맨투맨 · 메리고라운드 2026 겨울. 색상 2가지(핑크·네이비), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["핑크","네이비"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48124.jpg",imgs:["assets/merry/web/48124.jpg"],thumbs:[]},
+  {id:"m48123",brand:"merry",brandName:"메리고라운드",cat:"상하세트",name:"글로시세트",price:51200,origin:0,desc:"글로시세트 · 메리고라운드 2026 겨울. 색상 3가지(핑크·메란지·소라), 사이즈 XS·S·M·L·XL·2XL. 위아래를 한 번에 맞춰 입는 세트예요.",colors:["핑크","메란지","소라"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48123.jpg",imgs:["assets/merry/web/48123.jpg"],thumbs:[]},
+  {id:"m48122",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"골지프릴부츠컷",price:20800,origin:0,desc:"골지프릴부츠컷 · 메리고라운드 2026 겨울. 색상 3가지(크림·블랙·쥐색), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["크림","블랙","쥐색"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48122.jpg",imgs:["assets/merry/web/48122.jpg"],thumbs:[]},
+  {id:"m48121",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"골지날라리티",price:14400,origin:0,desc:"골지날라리티 · 메리고라운드 2026 겨울. 색상 5가지(아이·블랙·퍼플·민트·핑크), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["아이","블랙","퍼플","민트","핑크"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48121.jpg",imgs:["assets/merry/web/48121.jpg"],thumbs:[]},
+  {id:"m48120",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"겨울젤리부츠컷(무지)",price:16000,origin:0,desc:"겨울젤리부츠컷(무지) · 메리고라운드 2026 겨울. 색상 2가지(블랙·메란지), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["블랙","메란지"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48120.jpg",imgs:["assets/merry/web/48120.jpg"],thumbs:[]},
+  {id:"m48119",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"겨울젤리부츠컷(골지데님)",price:14400,origin:0,desc:"겨울젤리부츠컷(골지데님) · 메리고라운드 2026 겨울. 색상 4가지(골지아이·골지블랙·골지보라·데님), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["골지아이","골지블랙","골지보라","데님"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48119.jpg",imgs:["assets/merry/web/48119.jpg"],thumbs:[]},
+  {id:"m48118",brand:"merry",brandName:"메리고라운드",cat:"하의",name:"겨울아이콘치랭",price:36800,origin:0,desc:"겨울아이콘치랭 · 메리고라운드 2026 겨울. 색상 3가지(블랙·먹색·노랑), 사이즈 XS·S·M·L·XL·2XL. 아이 움직임이 편한 하의예요.",colors:["블랙","먹색","노랑"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48118.jpg",imgs:["assets/merry/web/48118.jpg"],thumbs:[]},
+  {id:"m48117",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"26겨울반폴라(스트라이프)",price:14400,origin:0,desc:"26겨울반폴라(스트라이프) · 메리고라운드 2026 겨울. 색상 1가지(스트라이프), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["스트라이프"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48117.jpg",imgs:["assets/merry/web/48117.jpg"],thumbs:[]},
+  {id:"m48116",brand:"merry",brandName:"메리고라운드",cat:"상의",name:"26겨울반폴라(무지)",price:12800,origin:0,desc:"26겨울반폴라(무지) · 메리고라운드 2026 겨울. 색상 5가지(아이·메란지·블랙·다홍·퍼플), 사이즈 XS·S·M·L·XL·2XL. 등원·외출에 매일 손이 가는 상의예요.",colors:["아이","메란지","블랙","다홍","퍼플"],sizes:["XS","S","M","L","XL","2XL"],img:"assets/merry/web/48116.jpg",imgs:["assets/merry/web/48116.jpg"],thumbs:[]},
+  {id:"t1",brand:"teteco",brandName:"테테코",cat:"하의",name:"ST기모나팔바지",price:14000,origin:0,desc:"ST기모나팔바지 · 테테코 겨울. 색상 2가지(보라·브라운), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 11장으로 앞·뒤·디테일까지 확인하세요.",colors:["보라","브라운"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/01/1_1.jpg",imgs:["assets/teteco/01/1_1.jpg","assets/teteco/01/1_2.jpg","assets/teteco/01/1_3.jpg","assets/teteco/01/1_4.jpg","assets/teteco/01/1_5.jpg","assets/teteco/01/1_6.jpg","assets/teteco/01/1_7.jpg","assets/teteco/01/1_8.jpg","assets/teteco/01/1_9.jpg","assets/teteco/01/1_10.jpg","assets/teteco/01/1_11.jpg"],thumbs:["assets/teteco/01/thumb/1_1.jpg","assets/teteco/01/thumb/1_2.jpg","assets/teteco/01/thumb/1_3.jpg","assets/teteco/01/thumb/1_4.jpg","assets/teteco/01/thumb/1_5.jpg","assets/teteco/01/thumb/1_6.jpg","assets/teteco/01/thumb/1_7.jpg","assets/teteco/01/thumb/1_8.jpg","assets/teteco/01/thumb/1_9.jpg","assets/teteco/01/thumb/1_10.jpg","assets/teteco/01/thumb/1_11.jpg"]},
+  {id:"t2",brand:"teteco",brandName:"테테코",cat:"상의",name:"겨울레이어드티",price:6500,origin:0,desc:"겨울레이어드티 · 테테코 겨울. 색상 2가지(아이보리·검정), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 12장으로 앞·뒤·디테일까지 확인하세요.",colors:["아이보리","검정"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/02/1_1.jpg",imgs:["assets/teteco/02/1_1.jpg","assets/teteco/02/1_2.jpg","assets/teteco/02/1_3.jpg","assets/teteco/02/1_4.jpg","assets/teteco/02/1_5.jpg","assets/teteco/02/1_6.jpg","assets/teteco/02/1_7.jpg","assets/teteco/02/1_8.jpg","assets/teteco/02/1_9.jpg","assets/teteco/02/1_10.jpg","assets/teteco/02/1_11.jpg","assets/teteco/02/1_12.jpg"],thumbs:["assets/teteco/02/thumb/1_1.jpg","assets/teteco/02/thumb/1_2.jpg","assets/teteco/02/thumb/1_3.jpg","assets/teteco/02/thumb/1_4.jpg","assets/teteco/02/thumb/1_5.jpg","assets/teteco/02/thumb/1_6.jpg","assets/teteco/02/thumb/1_7.jpg","assets/teteco/02/thumb/1_8.jpg","assets/teteco/02/thumb/1_9.jpg","assets/teteco/02/thumb/1_10.jpg","assets/teteco/02/thumb/1_11.jpg","assets/teteco/02/thumb/1_12.jpg"]},
+  {id:"t3",brand:"teteco",brandName:"테테코",cat:"상의",name:"곰노르딕양기모맨투맨",price:16000,origin:0,desc:"곰노르딕양기모맨투맨 · 테테코 겨울. 색상 2가지(와인·네이비), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["와인","네이비"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/03/1_1.jpg",imgs:["assets/teteco/03/1_1.jpg","assets/teteco/03/1_2.jpg","assets/teteco/03/1_3.jpg","assets/teteco/03/1_4.jpg","assets/teteco/03/1_5.jpg","assets/teteco/03/1_6.jpg","assets/teteco/03/1_7.jpg","assets/teteco/03/1_8.jpg","assets/teteco/03/1_9.jpg","assets/teteco/03/1_10.jpg","assets/teteco/03/1_11.jpg","assets/teteco/03/1_12.jpg","assets/teteco/03/1_13.jpg","assets/teteco/03/1_14.jpg","assets/teteco/03/1_15.jpg"],thumbs:["assets/teteco/03/thumb/1_1.jpg","assets/teteco/03/thumb/1_2.jpg","assets/teteco/03/thumb/1_3.jpg","assets/teteco/03/thumb/1_4.jpg","assets/teteco/03/thumb/1_5.jpg","assets/teteco/03/thumb/1_6.jpg","assets/teteco/03/thumb/1_7.jpg","assets/teteco/03/thumb/1_8.jpg","assets/teteco/03/thumb/1_9.jpg","assets/teteco/03/thumb/1_10.jpg","assets/teteco/03/thumb/1_11.jpg","assets/teteco/03/thumb/1_12.jpg","assets/teteco/03/thumb/1_13.jpg","assets/teteco/03/thumb/1_14.jpg","assets/teteco/03/thumb/1_15.jpg"]},
+  {id:"t4",brand:"teteco",brandName:"테테코",cat:"상의",name:"그래픽덤블맨투맨",price:17000,origin:0,desc:"그래픽덤블맨투맨 · 테테코 겨울. 색상 3가지(플라워·하트·펭귄), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["플라워","하트","펭귄"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/04/1_1.jpg",imgs:["assets/teteco/04/1_1.jpg","assets/teteco/04/1_2.jpg","assets/teteco/04/1_3.jpg","assets/teteco/04/1_4.jpg","assets/teteco/04/1_5.jpg","assets/teteco/04/1_6.jpg","assets/teteco/04/1_7.jpg","assets/teteco/04/1_8.jpg","assets/teteco/04/1_9.jpg","assets/teteco/04/1_10.jpg","assets/teteco/04/1_11.jpg","assets/teteco/04/1_12.jpg","assets/teteco/04/1_13.jpg","assets/teteco/04/1_14.jpg","assets/teteco/04/1_15.jpg"],thumbs:["assets/teteco/04/thumb/1_1.jpg","assets/teteco/04/thumb/1_2.jpg","assets/teteco/04/thumb/1_3.jpg","assets/teteco/04/thumb/1_4.jpg","assets/teteco/04/thumb/1_5.jpg","assets/teteco/04/thumb/1_6.jpg","assets/teteco/04/thumb/1_7.jpg","assets/teteco/04/thumb/1_8.jpg","assets/teteco/04/thumb/1_9.jpg","assets/teteco/04/thumb/1_10.jpg","assets/teteco/04/thumb/1_11.jpg","assets/teteco/04/thumb/1_12.jpg","assets/teteco/04/thumb/1_13.jpg","assets/teteco/04/thumb/1_14.jpg","assets/teteco/04/thumb/1_15.jpg"]},
+  {id:"t5",brand:"teteco",brandName:"테테코",cat:"하의",name:"기모코듀로이조거",price:15000,origin:0,desc:"기모코듀로이조거 · 테테코 겨울. 색상 5가지(크림·검정·베이지·소라·인핑), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","검정","베이지","소라","인핑"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/05/1_1.jpg",imgs:["assets/teteco/05/1_1.jpg","assets/teteco/05/1_2.jpg","assets/teteco/05/1_3.jpg","assets/teteco/05/1_4.jpg","assets/teteco/05/1_5.jpg","assets/teteco/05/1_6.jpg","assets/teteco/05/1_7.jpg","assets/teteco/05/1_8.jpg","assets/teteco/05/1_9.jpg","assets/teteco/05/1_10.jpg","assets/teteco/05/1_11.jpg","assets/teteco/05/1_12.jpg","assets/teteco/05/1_13.jpg","assets/teteco/05/1_14.jpg","assets/teteco/05/1_15.jpg"],thumbs:["assets/teteco/05/thumb/1_1.jpg","assets/teteco/05/thumb/1_2.jpg","assets/teteco/05/thumb/1_3.jpg","assets/teteco/05/thumb/1_4.jpg","assets/teteco/05/thumb/1_5.jpg","assets/teteco/05/thumb/1_6.jpg","assets/teteco/05/thumb/1_7.jpg","assets/teteco/05/thumb/1_8.jpg","assets/teteco/05/thumb/1_9.jpg","assets/teteco/05/thumb/1_10.jpg","assets/teteco/05/thumb/1_11.jpg","assets/teteco/05/thumb/1_12.jpg","assets/teteco/05/thumb/1_13.jpg","assets/teteco/05/thumb/1_14.jpg","assets/teteco/05/thumb/1_15.jpg"]},
+  {id:"t6",brand:"teteco",brandName:"테테코",cat:"아우터",name:"니트덤블베스트",price:13500,origin:0,desc:"니트덤블베스트 · 테테코 겨울. 색상 3가지(브라운·네이비·퍼플핑크), 사이즈 XS~XL. 겉에 하나만 걸쳐도 포근한 아우터예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["브라운","네이비","퍼플핑크"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/06/1_1.jpg",imgs:["assets/teteco/06/1_1.jpg","assets/teteco/06/1_2.jpg","assets/teteco/06/1_3.jpg","assets/teteco/06/1_4.jpg","assets/teteco/06/1_5.jpg","assets/teteco/06/1_6.jpg","assets/teteco/06/1_7.jpg","assets/teteco/06/1_8.jpg","assets/teteco/06/1_9.jpg","assets/teteco/06/1_10.jpg","assets/teteco/06/1_11.jpg","assets/teteco/06/1_12.jpg","assets/teteco/06/1_13.jpg","assets/teteco/06/1_14.jpg","assets/teteco/06/1_15.jpg"],thumbs:["assets/teteco/06/thumb/1_1.jpg","assets/teteco/06/thumb/1_2.jpg","assets/teteco/06/thumb/1_3.jpg","assets/teteco/06/thumb/1_4.jpg","assets/teteco/06/thumb/1_5.jpg","assets/teteco/06/thumb/1_6.jpg","assets/teteco/06/thumb/1_7.jpg","assets/teteco/06/thumb/1_8.jpg","assets/teteco/06/thumb/1_9.jpg","assets/teteco/06/thumb/1_10.jpg","assets/teteco/06/thumb/1_11.jpg","assets/teteco/06/thumb/1_12.jpg","assets/teteco/06/thumb/1_13.jpg","assets/teteco/06/thumb/1_14.jpg","assets/teteco/06/thumb/1_15.jpg"]},
+  {id:"t7",brand:"teteco",brandName:"테테코",cat:"하의",name:"니트워머레깅스",price:10000,origin:0,desc:"니트워머레깅스 · 테테코 겨울. 색상 4가지(아이·레드·베이지·멜란지), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["아이","레드","베이지","멜란지"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/07/1_1.jpg",imgs:["assets/teteco/07/1_1.jpg","assets/teteco/07/1_2.jpg","assets/teteco/07/1_3.jpg","assets/teteco/07/1_4.jpg","assets/teteco/07/1_5.jpg","assets/teteco/07/1_6.jpg","assets/teteco/07/1_7.jpg","assets/teteco/07/1_8.jpg","assets/teteco/07/1_9.jpg","assets/teteco/07/1_10.jpg","assets/teteco/07/1_11.jpg","assets/teteco/07/1_12.jpg","assets/teteco/07/1_13.jpg","assets/teteco/07/1_14.jpg","assets/teteco/07/1_15.jpg"],thumbs:["assets/teteco/07/thumb/1_1.jpg","assets/teteco/07/thumb/1_2.jpg","assets/teteco/07/thumb/1_3.jpg","assets/teteco/07/thumb/1_4.jpg","assets/teteco/07/thumb/1_5.jpg","assets/teteco/07/thumb/1_6.jpg","assets/teteco/07/thumb/1_7.jpg","assets/teteco/07/thumb/1_8.jpg","assets/teteco/07/thumb/1_9.jpg","assets/teteco/07/thumb/1_10.jpg","assets/teteco/07/thumb/1_11.jpg","assets/teteco/07/thumb/1_12.jpg","assets/teteco/07/thumb/1_13.jpg","assets/teteco/07/thumb/1_14.jpg","assets/teteco/07/thumb/1_15.jpg"]},
+  {id:"t8",brand:"teteco",brandName:"테테코",cat:"하의",name:"단가라뽀송조거",price:15000,origin:0,desc:"단가라뽀송조거 · 테테코 겨울. 색상 2가지(줄그레이·줄아이), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 12장으로 앞·뒤·디테일까지 확인하세요.",colors:["줄그레이","줄아이"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/08/1_1.jpg",imgs:["assets/teteco/08/1_1.jpg","assets/teteco/08/1_2.jpg","assets/teteco/08/1_3.jpg","assets/teteco/08/1_4.jpg","assets/teteco/08/1_5.jpg","assets/teteco/08/1_6.jpg","assets/teteco/08/1_7.jpg","assets/teteco/08/1_8.jpg","assets/teteco/08/1_9.jpg","assets/teteco/08/1_10.jpg","assets/teteco/08/1_11.jpg","assets/teteco/08/1_12.jpg"],thumbs:["assets/teteco/08/thumb/1_1.jpg","assets/teteco/08/thumb/1_2.jpg","assets/teteco/08/thumb/1_3.jpg","assets/teteco/08/thumb/1_4.jpg","assets/teteco/08/thumb/1_5.jpg","assets/teteco/08/thumb/1_6.jpg","assets/teteco/08/thumb/1_7.jpg","assets/teteco/08/thumb/1_8.jpg","assets/teteco/08/thumb/1_9.jpg","assets/teteco/08/thumb/1_10.jpg","assets/teteco/08/thumb/1_11.jpg","assets/teteco/08/thumb/1_12.jpg"]},
+  {id:"t9",brand:"teteco",brandName:"테테코",cat:"아우터",name:"단추덤블베스트",price:25000,origin:0,desc:"단추덤블베스트 · 테테코 겨울. 색상 2가지(크림·베이지), 사이즈 XS~XL. 겉에 하나만 걸쳐도 포근한 아우터예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","베이지"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/09/1_1.jpg",imgs:["assets/teteco/09/1_1.jpg","assets/teteco/09/1_2.jpg","assets/teteco/09/1_3.jpg","assets/teteco/09/1_4.jpg","assets/teteco/09/1_5.jpg","assets/teteco/09/1_6.jpg","assets/teteco/09/1_7.jpg","assets/teteco/09/1_8.jpg","assets/teteco/09/1_9.jpg","assets/teteco/09/1_10.jpg","assets/teteco/09/1_11.jpg","assets/teteco/09/1_12.jpg","assets/teteco/09/1_13.jpg","assets/teteco/09/1_14.jpg","assets/teteco/09/1_15.jpg"],thumbs:["assets/teteco/09/thumb/1_1.jpg","assets/teteco/09/thumb/1_2.jpg","assets/teteco/09/thumb/1_3.jpg","assets/teteco/09/thumb/1_4.jpg","assets/teteco/09/thumb/1_5.jpg","assets/teteco/09/thumb/1_6.jpg","assets/teteco/09/thumb/1_7.jpg","assets/teteco/09/thumb/1_8.jpg","assets/teteco/09/thumb/1_9.jpg","assets/teteco/09/thumb/1_10.jpg","assets/teteco/09/thumb/1_11.jpg","assets/teteco/09/thumb/1_12.jpg","assets/teteco/09/thumb/1_13.jpg","assets/teteco/09/thumb/1_14.jpg","assets/teteco/09/thumb/1_15.jpg"]},
+  {id:"t10",brand:"teteco",brandName:"테테코",cat:"하의",name:"단추양기모조거",price:18000,origin:0,desc:"단추양기모조거 · 테테코 겨울. 색상 6가지(검정·크림·마젠타·멜란지·올리브·딥레드), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["검정","크림","마젠타","멜란지","올리브","딥레드"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/10/1_1.jpg",imgs:["assets/teteco/10/1_1.jpg","assets/teteco/10/1_2.jpg","assets/teteco/10/1_3.jpg","assets/teteco/10/1_4.jpg","assets/teteco/10/1_5.jpg","assets/teteco/10/1_6.jpg","assets/teteco/10/1_7.jpg","assets/teteco/10/1_8.jpg","assets/teteco/10/1_9.jpg","assets/teteco/10/1_10.jpg","assets/teteco/10/1_11.jpg","assets/teteco/10/1_12.jpg","assets/teteco/10/1_13.jpg","assets/teteco/10/1_14.jpg","assets/teteco/10/1_15.jpg"],thumbs:["assets/teteco/10/thumb/1_1.jpg","assets/teteco/10/thumb/1_2.jpg","assets/teteco/10/thumb/1_3.jpg","assets/teteco/10/thumb/1_4.jpg","assets/teteco/10/thumb/1_5.jpg","assets/teteco/10/thumb/1_6.jpg","assets/teteco/10/thumb/1_7.jpg","assets/teteco/10/thumb/1_8.jpg","assets/teteco/10/thumb/1_9.jpg","assets/teteco/10/thumb/1_10.jpg","assets/teteco/10/thumb/1_11.jpg","assets/teteco/10/thumb/1_12.jpg","assets/teteco/10/thumb/1_13.jpg","assets/teteco/10/thumb/1_14.jpg","assets/teteco/10/thumb/1_15.jpg"]},
+  {id:"t11",brand:"teteco",brandName:"테테코",cat:"상의",name:"덤블단가라맨투맨",price:15000,origin:0,desc:"덤블단가라맨투맨 · 테테코 겨울. 색상 3가지(노랑·보라·레드), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["노랑","보라","레드"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/11/1_1.jpg",imgs:["assets/teteco/11/1_1.jpg","assets/teteco/11/1_2.jpg","assets/teteco/11/1_3.jpg","assets/teteco/11/1_4.jpg","assets/teteco/11/1_5.jpg","assets/teteco/11/1_6.jpg","assets/teteco/11/1_7.jpg","assets/teteco/11/1_8.jpg","assets/teteco/11/1_9.jpg","assets/teteco/11/1_10.jpg","assets/teteco/11/1_11.jpg","assets/teteco/11/1_12.jpg","assets/teteco/11/1_13.jpg","assets/teteco/11/1_14.jpg","assets/teteco/11/1_15.jpg"],thumbs:["assets/teteco/11/thumb/1_1.jpg","assets/teteco/11/thumb/1_2.jpg","assets/teteco/11/thumb/1_3.jpg","assets/teteco/11/thumb/1_4.jpg","assets/teteco/11/thumb/1_5.jpg","assets/teteco/11/thumb/1_6.jpg","assets/teteco/11/thumb/1_7.jpg","assets/teteco/11/thumb/1_8.jpg","assets/teteco/11/thumb/1_9.jpg","assets/teteco/11/thumb/1_10.jpg","assets/teteco/11/thumb/1_11.jpg","assets/teteco/11/thumb/1_12.jpg","assets/teteco/11/thumb/1_13.jpg","assets/teteco/11/thumb/1_14.jpg","assets/teteco/11/thumb/1_15.jpg"]},
+  {id:"t12",brand:"teteco",brandName:"테테코",cat:"상하세트",name:"도트후리스셋업",price:39000,origin:0,desc:"도트후리스셋업 · 테테코 겨울. 색상 2가지(검정·크림), 사이즈 XS~XL. 위아래를 한 번에 맞출 수 있는 세트예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["검정","크림"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/12/1_1.jpg",imgs:["assets/teteco/12/1_1.jpg","assets/teteco/12/1_2.jpg","assets/teteco/12/1_3.jpg","assets/teteco/12/1_4.jpg","assets/teteco/12/1_5.jpg","assets/teteco/12/1_6.jpg","assets/teteco/12/1_7.jpg","assets/teteco/12/1_8.jpg","assets/teteco/12/1_9.jpg","assets/teteco/12/1_10.jpg","assets/teteco/12/1_11.jpg","assets/teteco/12/1_12.jpg","assets/teteco/12/1_13.jpg","assets/teteco/12/1_14.jpg","assets/teteco/12/1_15.jpg"],thumbs:["assets/teteco/12/thumb/1_1.jpg","assets/teteco/12/thumb/1_2.jpg","assets/teteco/12/thumb/1_3.jpg","assets/teteco/12/thumb/1_4.jpg","assets/teteco/12/thumb/1_5.jpg","assets/teteco/12/thumb/1_6.jpg","assets/teteco/12/thumb/1_7.jpg","assets/teteco/12/thumb/1_8.jpg","assets/teteco/12/thumb/1_9.jpg","assets/teteco/12/thumb/1_10.jpg","assets/teteco/12/thumb/1_11.jpg","assets/teteco/12/thumb/1_12.jpg","assets/teteco/12/thumb/1_13.jpg","assets/teteco/12/thumb/1_14.jpg","assets/teteco/12/thumb/1_15.jpg"]},
+  {id:"t13",brand:"teteco",brandName:"테테코",cat:"하의",name:"도트후리스팬츠",price:18000,origin:0,desc:"도트후리스팬츠 · 테테코 겨울. 색상 2가지(그레이·브라운), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 11장으로 앞·뒤·디테일까지 확인하세요.",colors:["그레이","브라운"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/13/1_1.jpg",imgs:["assets/teteco/13/1_1.jpg","assets/teteco/13/1_2.jpg","assets/teteco/13/1_3.jpg","assets/teteco/13/1_4.jpg","assets/teteco/13/1_5.jpg","assets/teteco/13/1_6.jpg","assets/teteco/13/1_7.jpg","assets/teteco/13/1_8.jpg","assets/teteco/13/1_9.jpg","assets/teteco/13/1_10.jpg","assets/teteco/13/1_11.jpg"],thumbs:["assets/teteco/13/thumb/1_1.jpg","assets/teteco/13/thumb/1_2.jpg","assets/teteco/13/thumb/1_3.jpg","assets/teteco/13/thumb/1_4.jpg","assets/teteco/13/thumb/1_5.jpg","assets/teteco/13/thumb/1_6.jpg","assets/teteco/13/thumb/1_7.jpg","assets/teteco/13/thumb/1_8.jpg","assets/teteco/13/thumb/1_9.jpg","assets/teteco/13/thumb/1_10.jpg","assets/teteco/13/thumb/1_11.jpg"]},
+  {id:"t14",brand:"teteco",brandName:"테테코",cat:"상의",name:"동물부클양기모맨투맨",price:18000,origin:0,desc:"동물부클양기모맨투맨 · 테테코 겨울. 색상 4가지(인핑·레드·오트밀·겨자), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["인핑","레드","오트밀","겨자"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/14/1_1.jpg",imgs:["assets/teteco/14/1_1.jpg","assets/teteco/14/1_2.jpg","assets/teteco/14/1_3.jpg","assets/teteco/14/1_4.jpg","assets/teteco/14/1_5.jpg","assets/teteco/14/1_6.jpg","assets/teteco/14/1_7.jpg","assets/teteco/14/1_8.jpg","assets/teteco/14/1_9.jpg","assets/teteco/14/1_10.jpg","assets/teteco/14/1_11.jpg","assets/teteco/14/1_12.jpg","assets/teteco/14/1_13.jpg","assets/teteco/14/1_14.jpg","assets/teteco/14/1_15.jpg"],thumbs:["assets/teteco/14/thumb/1_1.jpg","assets/teteco/14/thumb/1_2.jpg","assets/teteco/14/thumb/1_3.jpg","assets/teteco/14/thumb/1_4.jpg","assets/teteco/14/thumb/1_5.jpg","assets/teteco/14/thumb/1_6.jpg","assets/teteco/14/thumb/1_7.jpg","assets/teteco/14/thumb/1_8.jpg","assets/teteco/14/thumb/1_9.jpg","assets/teteco/14/thumb/1_10.jpg","assets/teteco/14/thumb/1_11.jpg","assets/teteco/14/thumb/1_12.jpg","assets/teteco/14/thumb/1_13.jpg","assets/teteco/14/thumb/1_14.jpg","assets/teteco/14/thumb/1_15.jpg"]},
+  {id:"t15",brand:"teteco",brandName:"테테코",cat:"아우터",name:"딸기덤블가디건",price:21000,origin:0,desc:"딸기덤블가디건 · 테테코 겨울. 색상 2가지(아이·핑크), 사이즈 XS~XL. 겉에 하나만 걸쳐도 포근한 아우터예요. 상세 사진 14장으로 앞·뒤·디테일까지 확인하세요.",colors:["아이","핑크"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/15/1_1.jpg",imgs:["assets/teteco/15/1_1.jpg","assets/teteco/15/1_2.jpg","assets/teteco/15/1_3.jpg","assets/teteco/15/1_4.jpg","assets/teteco/15/1_5.jpg","assets/teteco/15/1_6.jpg","assets/teteco/15/1_7.jpg","assets/teteco/15/1_8.jpg","assets/teteco/15/1_9.jpg","assets/teteco/15/1_10.jpg","assets/teteco/15/1_11.jpg","assets/teteco/15/1_12.jpg","assets/teteco/15/1_13.jpg","assets/teteco/15/1_14.jpg"],thumbs:["assets/teteco/15/thumb/1_1.jpg","assets/teteco/15/thumb/1_2.jpg","assets/teteco/15/thumb/1_3.jpg","assets/teteco/15/thumb/1_4.jpg","assets/teteco/15/thumb/1_5.jpg","assets/teteco/15/thumb/1_6.jpg","assets/teteco/15/thumb/1_7.jpg","assets/teteco/15/thumb/1_8.jpg","assets/teteco/15/thumb/1_9.jpg","assets/teteco/15/thumb/1_10.jpg","assets/teteco/15/thumb/1_11.jpg","assets/teteco/15/thumb/1_12.jpg","assets/teteco/15/thumb/1_13.jpg","assets/teteco/15/thumb/1_14.jpg"]},
+  {id:"t16",brand:"teteco",brandName:"테테코",cat:"상의",name:"러브양기모맨투맨",price:21000,origin:0,desc:"러브양기모맨투맨 · 테테코 겨울. 색상 3가지(크림·멜란지·와인), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","멜란지","와인"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/16/1_1.jpg",imgs:["assets/teteco/16/1_1.jpg","assets/teteco/16/1_2.jpg","assets/teteco/16/1_3.jpg","assets/teteco/16/1_4.jpg","assets/teteco/16/1_5.jpg","assets/teteco/16/1_6.jpg","assets/teteco/16/1_7.jpg","assets/teteco/16/1_8.jpg","assets/teteco/16/1_9.jpg","assets/teteco/16/1_10.jpg","assets/teteco/16/1_11.jpg","assets/teteco/16/1_12.jpg","assets/teteco/16/1_13.jpg","assets/teteco/16/1_14.jpg","assets/teteco/16/1_15.jpg"],thumbs:["assets/teteco/16/thumb/1_1.jpg","assets/teteco/16/thumb/1_2.jpg","assets/teteco/16/thumb/1_3.jpg","assets/teteco/16/thumb/1_4.jpg","assets/teteco/16/thumb/1_5.jpg","assets/teteco/16/thumb/1_6.jpg","assets/teteco/16/thumb/1_7.jpg","assets/teteco/16/thumb/1_8.jpg","assets/teteco/16/thumb/1_9.jpg","assets/teteco/16/thumb/1_10.jpg","assets/teteco/16/thumb/1_11.jpg","assets/teteco/16/thumb/1_12.jpg","assets/teteco/16/thumb/1_13.jpg","assets/teteco/16/thumb/1_14.jpg","assets/teteco/16/thumb/1_15.jpg"]},
+  {id:"t17",brand:"teteco",brandName:"테테코",cat:"상의",name:"레빗양기모맨투맨",price:17000,origin:0,desc:"레빗양기모맨투맨 · 테테코 겨울. 색상 2가지(크림·핑크), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","핑크"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/17/1_1.jpg",imgs:["assets/teteco/17/1_1.jpg","assets/teteco/17/1_2.jpg","assets/teteco/17/1_3.jpg","assets/teteco/17/1_4.jpg","assets/teteco/17/1_5.jpg","assets/teteco/17/1_6.jpg","assets/teteco/17/1_7.jpg","assets/teteco/17/1_8.jpg","assets/teteco/17/1_9.jpg","assets/teteco/17/1_10.jpg","assets/teteco/17/1_11.jpg","assets/teteco/17/1_12.jpg","assets/teteco/17/1_13.jpg","assets/teteco/17/1_14.jpg","assets/teteco/17/1_15.jpg"],thumbs:["assets/teteco/17/thumb/1_1.jpg","assets/teteco/17/thumb/1_2.jpg","assets/teteco/17/thumb/1_3.jpg","assets/teteco/17/thumb/1_4.jpg","assets/teteco/17/thumb/1_5.jpg","assets/teteco/17/thumb/1_6.jpg","assets/teteco/17/thumb/1_7.jpg","assets/teteco/17/thumb/1_8.jpg","assets/teteco/17/thumb/1_9.jpg","assets/teteco/17/thumb/1_10.jpg","assets/teteco/17/thumb/1_11.jpg","assets/teteco/17/thumb/1_12.jpg","assets/teteco/17/thumb/1_13.jpg","assets/teteco/17/thumb/1_14.jpg","assets/teteco/17/thumb/1_15.jpg"]},
+  {id:"t18",brand:"teteco",brandName:"테테코",cat:"상의",name:"로즈자가드티",price:18000,origin:0,desc:"로즈자가드티 · 테테코 겨울. 색상 2가지(레드·검정), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["레드","검정"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/18/1_1.jpg",imgs:["assets/teteco/18/1_1.jpg","assets/teteco/18/1_2.jpg","assets/teteco/18/1_3.jpg","assets/teteco/18/1_4.jpg","assets/teteco/18/1_5.jpg","assets/teteco/18/1_6.jpg","assets/teteco/18/1_7.jpg","assets/teteco/18/1_8.jpg","assets/teteco/18/1_9.jpg","assets/teteco/18/1_10.jpg","assets/teteco/18/1_11.jpg","assets/teteco/18/1_12.jpg","assets/teteco/18/1_13.jpg","assets/teteco/18/1_14.jpg","assets/teteco/18/1_15.jpg"],thumbs:["assets/teteco/18/thumb/1_1.jpg","assets/teteco/18/thumb/1_2.jpg","assets/teteco/18/thumb/1_3.jpg","assets/teteco/18/thumb/1_4.jpg","assets/teteco/18/thumb/1_5.jpg","assets/teteco/18/thumb/1_6.jpg","assets/teteco/18/thumb/1_7.jpg","assets/teteco/18/thumb/1_8.jpg","assets/teteco/18/thumb/1_9.jpg","assets/teteco/18/thumb/1_10.jpg","assets/teteco/18/thumb/1_11.jpg","assets/teteco/18/thumb/1_12.jpg","assets/teteco/18/thumb/1_13.jpg","assets/teteco/18/thumb/1_14.jpg","assets/teteco/18/thumb/1_15.jpg"]},
+  {id:"t19",brand:"teteco",brandName:"테테코",cat:"하의",name:"루즈핏코듀로이팬츠",price:19000,origin:0,desc:"루즈핏코듀로이팬츠 · 테테코 겨울. 색상 3가지(크림·소라·올리브), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","소라","올리브"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/19/1_1.jpg",imgs:["assets/teteco/19/1_1.jpg","assets/teteco/19/1_2.jpg","assets/teteco/19/1_3.jpg","assets/teteco/19/1_4.jpg","assets/teteco/19/1_5.jpg","assets/teteco/19/1_6.jpg","assets/teteco/19/1_7.jpg","assets/teteco/19/1_8.jpg","assets/teteco/19/1_9.jpg","assets/teteco/19/1_10.jpg","assets/teteco/19/1_11.jpg","assets/teteco/19/1_12.jpg","assets/teteco/19/1_13.jpg","assets/teteco/19/1_14.jpg","assets/teteco/19/1_15.jpg"],thumbs:["assets/teteco/19/thumb/1_1.jpg","assets/teteco/19/thumb/1_2.jpg","assets/teteco/19/thumb/1_3.jpg","assets/teteco/19/thumb/1_4.jpg","assets/teteco/19/thumb/1_5.jpg","assets/teteco/19/thumb/1_6.jpg","assets/teteco/19/thumb/1_7.jpg","assets/teteco/19/thumb/1_8.jpg","assets/teteco/19/thumb/1_9.jpg","assets/teteco/19/thumb/1_10.jpg","assets/teteco/19/thumb/1_11.jpg","assets/teteco/19/thumb/1_12.jpg","assets/teteco/19/thumb/1_13.jpg","assets/teteco/19/thumb/1_14.jpg","assets/teteco/19/thumb/1_15.jpg"]},
+  {id:"t20",brand:"teteco",brandName:"테테코",cat:"상의",name:"모카윈터줄폴라",price:11000,origin:0,desc:"모카윈터줄폴라 · 테테코 겨울. 색상 4가지(검정·핑크·브라운·올리브), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["검정","핑크","브라운","올리브"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/20/1_1.jpg",imgs:["assets/teteco/20/1_1.jpg","assets/teteco/20/1_2.jpg","assets/teteco/20/1_3.jpg","assets/teteco/20/1_4.jpg","assets/teteco/20/1_5.jpg","assets/teteco/20/1_6.jpg","assets/teteco/20/1_7.jpg","assets/teteco/20/1_8.jpg","assets/teteco/20/1_9.jpg","assets/teteco/20/1_10.jpg","assets/teteco/20/1_11.jpg","assets/teteco/20/1_12.jpg","assets/teteco/20/1_13.jpg","assets/teteco/20/1_14.jpg","assets/teteco/20/1_15.jpg"],thumbs:["assets/teteco/20/thumb/1_1.jpg","assets/teteco/20/thumb/1_2.jpg","assets/teteco/20/thumb/1_3.jpg","assets/teteco/20/thumb/1_4.jpg","assets/teteco/20/thumb/1_5.jpg","assets/teteco/20/thumb/1_6.jpg","assets/teteco/20/thumb/1_7.jpg","assets/teteco/20/thumb/1_8.jpg","assets/teteco/20/thumb/1_9.jpg","assets/teteco/20/thumb/1_10.jpg","assets/teteco/20/thumb/1_11.jpg","assets/teteco/20/thumb/1_12.jpg","assets/teteco/20/thumb/1_13.jpg","assets/teteco/20/thumb/1_14.jpg","assets/teteco/20/thumb/1_15.jpg"]},
+  {id:"t21",brand:"teteco",brandName:"테테코",cat:"상하세트",name:"몽실아노락상하",price:33500,origin:0,desc:"몽실아노락상하 · 테테코 겨울. 색상 4가지(오트밀·멜란지·소라·핑크), 사이즈 XS~XL. 위아래를 한 번에 맞출 수 있는 세트예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["오트밀","멜란지","소라","핑크"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/21/1_1.jpg",imgs:["assets/teteco/21/1_1.jpg","assets/teteco/21/1_2.jpg","assets/teteco/21/1_3.jpg","assets/teteco/21/1_4.jpg","assets/teteco/21/1_5.jpg","assets/teteco/21/1_6.jpg","assets/teteco/21/1_7.jpg","assets/teteco/21/1_8.jpg","assets/teteco/21/1_9.jpg","assets/teteco/21/1_10.jpg","assets/teteco/21/1_11.jpg","assets/teteco/21/1_12.jpg","assets/teteco/21/1_13.jpg","assets/teteco/21/1_14.jpg","assets/teteco/21/1_15.jpg"],thumbs:["assets/teteco/21/thumb/1_1.jpg","assets/teteco/21/thumb/1_2.jpg","assets/teteco/21/thumb/1_3.jpg","assets/teteco/21/thumb/1_4.jpg","assets/teteco/21/thumb/1_5.jpg","assets/teteco/21/thumb/1_6.jpg","assets/teteco/21/thumb/1_7.jpg","assets/teteco/21/thumb/1_8.jpg","assets/teteco/21/thumb/1_9.jpg","assets/teteco/21/thumb/1_10.jpg","assets/teteco/21/thumb/1_11.jpg","assets/teteco/21/thumb/1_12.jpg","assets/teteco/21/thumb/1_13.jpg","assets/teteco/21/thumb/1_14.jpg","assets/teteco/21/thumb/1_15.jpg"]},
+  {id:"t22",brand:"teteco",brandName:"테테코",cat:"상하세트",name:"베어배색양기모상하",price:31000,origin:0,desc:"베어배색양기모상하 · 테테코 겨울. 색상 3가지(크림바지·딥레드바지·소라바지), 사이즈 XS~XL. 위아래를 한 번에 맞출 수 있는 세트예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림바지","딥레드바지","소라바지"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/22/1_1.jpg",imgs:["assets/teteco/22/1_1.jpg","assets/teteco/22/1_2.jpg","assets/teteco/22/1_3.jpg","assets/teteco/22/1_4.jpg","assets/teteco/22/1_5.jpg","assets/teteco/22/1_6.jpg","assets/teteco/22/1_7.jpg","assets/teteco/22/1_8.jpg","assets/teteco/22/1_9.jpg","assets/teteco/22/1_10.jpg","assets/teteco/22/1_11.jpg","assets/teteco/22/1_12.jpg","assets/teteco/22/1_13.jpg","assets/teteco/22/1_14.jpg","assets/teteco/22/1_15.jpg"],thumbs:["assets/teteco/22/thumb/1_1.jpg","assets/teteco/22/thumb/1_2.jpg","assets/teteco/22/thumb/1_3.jpg","assets/teteco/22/thumb/1_4.jpg","assets/teteco/22/thumb/1_5.jpg","assets/teteco/22/thumb/1_6.jpg","assets/teteco/22/thumb/1_7.jpg","assets/teteco/22/thumb/1_8.jpg","assets/teteco/22/thumb/1_9.jpg","assets/teteco/22/thumb/1_10.jpg","assets/teteco/22/thumb/1_11.jpg","assets/teteco/22/thumb/1_12.jpg","assets/teteco/22/thumb/1_13.jpg","assets/teteco/22/thumb/1_14.jpg","assets/teteco/22/thumb/1_15.jpg"]},
+  {id:"t23",brand:"teteco",brandName:"테테코",cat:"하의",name:"벨로아골지부츠컷",price:15000,origin:0,desc:"벨로아골지부츠컷 · 테테코 겨울. 색상 3가지(연베이지·올리브·인핑), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["연베이지","올리브","인핑"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/23/1_1.jpg",imgs:["assets/teteco/23/1_1.jpg","assets/teteco/23/1_2.jpg","assets/teteco/23/1_3.jpg","assets/teteco/23/1_4.jpg","assets/teteco/23/1_5.jpg","assets/teteco/23/1_6.jpg","assets/teteco/23/1_7.jpg","assets/teteco/23/1_8.jpg","assets/teteco/23/1_9.jpg","assets/teteco/23/1_10.jpg","assets/teteco/23/1_11.jpg","assets/teteco/23/1_12.jpg","assets/teteco/23/1_13.jpg","assets/teteco/23/1_14.jpg","assets/teteco/23/1_15.jpg"],thumbs:["assets/teteco/23/thumb/1_1.jpg","assets/teteco/23/thumb/1_2.jpg","assets/teteco/23/thumb/1_3.jpg","assets/teteco/23/thumb/1_4.jpg","assets/teteco/23/thumb/1_5.jpg","assets/teteco/23/thumb/1_6.jpg","assets/teteco/23/thumb/1_7.jpg","assets/teteco/23/thumb/1_8.jpg","assets/teteco/23/thumb/1_9.jpg","assets/teteco/23/thumb/1_10.jpg","assets/teteco/23/thumb/1_11.jpg","assets/teteco/23/thumb/1_12.jpg","assets/teteco/23/thumb/1_13.jpg","assets/teteco/23/thumb/1_14.jpg","assets/teteco/23/thumb/1_15.jpg"]},
+  {id:"t24",brand:"teteco",brandName:"테테코",cat:"상하세트",name:"벨로아조끼세트",price:30000,origin:0,desc:"벨로아조끼세트 · 테테코 겨울. 색상 3가지(멜란지·딥핑크·올리브), 사이즈 XS~XL. 위아래를 한 번에 맞출 수 있는 세트예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["멜란지","딥핑크","올리브"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/24/1_1.jpg",imgs:["assets/teteco/24/1_1.jpg","assets/teteco/24/1_2.jpg","assets/teteco/24/1_3.jpg","assets/teteco/24/1_4.jpg","assets/teteco/24/1_5.jpg","assets/teteco/24/1_6.jpg","assets/teteco/24/1_7.jpg","assets/teteco/24/1_8.jpg","assets/teteco/24/1_9.jpg","assets/teteco/24/1_10.jpg","assets/teteco/24/1_11.jpg","assets/teteco/24/1_12.jpg","assets/teteco/24/1_13.jpg","assets/teteco/24/1_14.jpg","assets/teteco/24/1_15.jpg"],thumbs:["assets/teteco/24/thumb/1_1.jpg","assets/teteco/24/thumb/1_2.jpg","assets/teteco/24/thumb/1_3.jpg","assets/teteco/24/thumb/1_4.jpg","assets/teteco/24/thumb/1_5.jpg","assets/teteco/24/thumb/1_6.jpg","assets/teteco/24/thumb/1_7.jpg","assets/teteco/24/thumb/1_8.jpg","assets/teteco/24/thumb/1_9.jpg","assets/teteco/24/thumb/1_10.jpg","assets/teteco/24/thumb/1_11.jpg","assets/teteco/24/thumb/1_12.jpg","assets/teteco/24/thumb/1_13.jpg","assets/teteco/24/thumb/1_14.jpg","assets/teteco/24/thumb/1_15.jpg"]},
+  {id:"t25",brand:"teteco",brandName:"테테코",cat:"상의",name:"뽀송버튼티",price:14000,origin:0,desc:"뽀송버튼티 · 테테코 겨울. 색상 2가지(브라운·네이비), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["브라운","네이비"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/25/1_1.jpg",imgs:["assets/teteco/25/1_1.jpg","assets/teteco/25/1_2.jpg","assets/teteco/25/1_3.jpg","assets/teteco/25/1_4.jpg","assets/teteco/25/1_5.jpg","assets/teteco/25/1_6.jpg","assets/teteco/25/1_7.jpg","assets/teteco/25/1_8.jpg","assets/teteco/25/1_9.jpg","assets/teteco/25/1_10.jpg","assets/teteco/25/1_11.jpg","assets/teteco/25/1_12.jpg","assets/teteco/25/1_13.jpg","assets/teteco/25/1_14.jpg","assets/teteco/25/1_15.jpg"],thumbs:["assets/teteco/25/thumb/1_1.jpg","assets/teteco/25/thumb/1_2.jpg","assets/teteco/25/thumb/1_3.jpg","assets/teteco/25/thumb/1_4.jpg","assets/teteco/25/thumb/1_5.jpg","assets/teteco/25/thumb/1_6.jpg","assets/teteco/25/thumb/1_7.jpg","assets/teteco/25/thumb/1_8.jpg","assets/teteco/25/thumb/1_9.jpg","assets/teteco/25/thumb/1_10.jpg","assets/teteco/25/thumb/1_11.jpg","assets/teteco/25/thumb/1_12.jpg","assets/teteco/25/thumb/1_13.jpg","assets/teteco/25/thumb/1_14.jpg","assets/teteco/25/thumb/1_15.jpg"]},
+  {id:"t26",brand:"teteco",brandName:"테테코",cat:"상의",name:"산타루돌프맨투맨",price:15500,origin:0,desc:"산타루돌프맨투맨 · 테테코 겨울. 색상 2가지(크림·레드), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","레드"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/26/1_1.jpg",imgs:["assets/teteco/26/1_1.jpg","assets/teteco/26/1_2.jpg","assets/teteco/26/1_3.jpg","assets/teteco/26/1_4.jpg","assets/teteco/26/1_5.jpg","assets/teteco/26/1_6.jpg","assets/teteco/26/1_7.jpg","assets/teteco/26/1_8.jpg","assets/teteco/26/1_9.jpg","assets/teteco/26/1_10.jpg","assets/teteco/26/1_11.jpg","assets/teteco/26/1_12.jpg","assets/teteco/26/1_13.jpg","assets/teteco/26/1_14.jpg","assets/teteco/26/1_15.jpg"],thumbs:["assets/teteco/26/thumb/1_1.jpg","assets/teteco/26/thumb/1_2.jpg","assets/teteco/26/thumb/1_3.jpg","assets/teteco/26/thumb/1_4.jpg","assets/teteco/26/thumb/1_5.jpg","assets/teteco/26/thumb/1_6.jpg","assets/teteco/26/thumb/1_7.jpg","assets/teteco/26/thumb/1_8.jpg","assets/teteco/26/thumb/1_9.jpg","assets/teteco/26/thumb/1_10.jpg","assets/teteco/26/thumb/1_11.jpg","assets/teteco/26/thumb/1_12.jpg","assets/teteco/26/thumb/1_13.jpg","assets/teteco/26/thumb/1_14.jpg","assets/teteco/26/thumb/1_15.jpg"]},
+  {id:"t27",brand:"teteco",brandName:"테테코",cat:"상의",name:"소프트윈터폴라티",price:9000,origin:0,desc:"소프트윈터폴라티 · 테테코 겨울. 색상 4가지(아이·오트밀·검정·보라), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["아이","오트밀","검정","보라"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/27/1_1.jpg",imgs:["assets/teteco/27/1_1.jpg","assets/teteco/27/1_2.jpg","assets/teteco/27/1_3.jpg","assets/teteco/27/1_4.jpg","assets/teteco/27/1_5.jpg","assets/teteco/27/1_6.jpg","assets/teteco/27/1_7.jpg","assets/teteco/27/1_8.jpg","assets/teteco/27/1_9.jpg","assets/teteco/27/1_10.jpg","assets/teteco/27/1_11.jpg","assets/teteco/27/1_12.jpg","assets/teteco/27/1_13.jpg","assets/teteco/27/1_14.jpg","assets/teteco/27/1_15.jpg"],thumbs:["assets/teteco/27/thumb/1_1.jpg","assets/teteco/27/thumb/1_2.jpg","assets/teteco/27/thumb/1_3.jpg","assets/teteco/27/thumb/1_4.jpg","assets/teteco/27/thumb/1_5.jpg","assets/teteco/27/thumb/1_6.jpg","assets/teteco/27/thumb/1_7.jpg","assets/teteco/27/thumb/1_8.jpg","assets/teteco/27/thumb/1_9.jpg","assets/teteco/27/thumb/1_10.jpg","assets/teteco/27/thumb/1_11.jpg","assets/teteco/27/thumb/1_12.jpg","assets/teteco/27/thumb/1_13.jpg","assets/teteco/27/thumb/1_14.jpg","assets/teteco/27/thumb/1_15.jpg"]},
+  {id:"t28",brand:"teteco",brandName:"테테코",cat:"상의",name:"썰매양기모맨투맨",price:15000,origin:0,desc:"썰매양기모맨투맨 · 테테코 겨울. 색상 3가지(백멜란지·네이비·딥레드), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["백멜란지","네이비","딥레드"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/28/1_1.jpg",imgs:["assets/teteco/28/1_1.jpg","assets/teteco/28/1_2.jpg","assets/teteco/28/1_3.jpg","assets/teteco/28/1_4.jpg","assets/teteco/28/1_5.jpg","assets/teteco/28/1_6.jpg","assets/teteco/28/1_7.jpg","assets/teteco/28/1_8.jpg","assets/teteco/28/1_9.jpg","assets/teteco/28/1_10.jpg","assets/teteco/28/1_11.jpg","assets/teteco/28/1_12.jpg","assets/teteco/28/1_13.jpg","assets/teteco/28/1_14.jpg","assets/teteco/28/1_15.jpg"],thumbs:["assets/teteco/28/thumb/1_1.jpg","assets/teteco/28/thumb/1_2.jpg","assets/teteco/28/thumb/1_3.jpg","assets/teteco/28/thumb/1_4.jpg","assets/teteco/28/thumb/1_5.jpg","assets/teteco/28/thumb/1_6.jpg","assets/teteco/28/thumb/1_7.jpg","assets/teteco/28/thumb/1_8.jpg","assets/teteco/28/thumb/1_9.jpg","assets/teteco/28/thumb/1_10.jpg","assets/teteco/28/thumb/1_11.jpg","assets/teteco/28/thumb/1_12.jpg","assets/teteco/28/thumb/1_13.jpg","assets/teteco/28/thumb/1_14.jpg","assets/teteco/28/thumb/1_15.jpg"]},
+  {id:"t29",brand:"teteco",brandName:"테테코",cat:"상의",name:"앙고라브이넥",price:14000,origin:0,desc:"앙고라브이넥 · 테테코 겨울. 색상 3가지(연보라·레드·딥블루), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["연보라","레드","딥블루"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/29/1_1.jpg",imgs:["assets/teteco/29/1_1.jpg","assets/teteco/29/1_2.jpg","assets/teteco/29/1_3.jpg","assets/teteco/29/1_4.jpg","assets/teteco/29/1_5.jpg","assets/teteco/29/1_6.jpg","assets/teteco/29/1_7.jpg","assets/teteco/29/1_8.jpg","assets/teteco/29/1_9.jpg","assets/teteco/29/1_10.jpg","assets/teteco/29/1_11.jpg","assets/teteco/29/1_12.jpg","assets/teteco/29/1_13.jpg","assets/teteco/29/1_14.jpg","assets/teteco/29/1_15.jpg"],thumbs:["assets/teteco/29/thumb/1_1.jpg","assets/teteco/29/thumb/1_2.jpg","assets/teteco/29/thumb/1_3.jpg","assets/teteco/29/thumb/1_4.jpg","assets/teteco/29/thumb/1_5.jpg","assets/teteco/29/thumb/1_6.jpg","assets/teteco/29/thumb/1_7.jpg","assets/teteco/29/thumb/1_8.jpg","assets/teteco/29/thumb/1_9.jpg","assets/teteco/29/thumb/1_10.jpg","assets/teteco/29/thumb/1_11.jpg","assets/teteco/29/thumb/1_12.jpg","assets/teteco/29/thumb/1_13.jpg","assets/teteco/29/thumb/1_14.jpg","assets/teteco/29/thumb/1_15.jpg"]},
+  {id:"t30",brand:"teteco",brandName:"테테코",cat:"상의",name:"애니멀카양기모맨투맨",price:15000,origin:0,desc:"애니멀카양기모맨투맨 · 테테코 겨울. 색상 3가지(오트밀·멜란지·연두), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["오트밀","멜란지","연두"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/30/1_1.jpg",imgs:["assets/teteco/30/1_1.jpg","assets/teteco/30/1_2.jpg","assets/teteco/30/1_3.jpg","assets/teteco/30/1_4.jpg","assets/teteco/30/1_5.jpg","assets/teteco/30/1_6.jpg","assets/teteco/30/1_7.jpg","assets/teteco/30/1_8.jpg","assets/teteco/30/1_9.jpg","assets/teteco/30/1_10.jpg","assets/teteco/30/1_11.jpg","assets/teteco/30/1_12.jpg","assets/teteco/30/1_13.jpg","assets/teteco/30/1_14.jpg","assets/teteco/30/1_15.jpg"],thumbs:["assets/teteco/30/thumb/1_1.jpg","assets/teteco/30/thumb/1_2.jpg","assets/teteco/30/thumb/1_3.jpg","assets/teteco/30/thumb/1_4.jpg","assets/teteco/30/thumb/1_5.jpg","assets/teteco/30/thumb/1_6.jpg","assets/teteco/30/thumb/1_7.jpg","assets/teteco/30/thumb/1_8.jpg","assets/teteco/30/thumb/1_9.jpg","assets/teteco/30/thumb/1_10.jpg","assets/teteco/30/thumb/1_11.jpg","assets/teteco/30/thumb/1_12.jpg","assets/teteco/30/thumb/1_13.jpg","assets/teteco/30/thumb/1_14.jpg","assets/teteco/30/thumb/1_15.jpg"]},
+  {id:"t31",brand:"teteco",brandName:"테테코",cat:"상하세트",name:"야옹라벨상하",price:30000,origin:0,desc:"야옹라벨상하 · 테테코 겨울. 색상 3가지(멜란지·빈티지버터·퍼플), 사이즈 XS~XL. 위아래를 한 번에 맞출 수 있는 세트예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["멜란지","빈티지버터","퍼플"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/31/1_1.jpg",imgs:["assets/teteco/31/1_1.jpg","assets/teteco/31/1_2.jpg","assets/teteco/31/1_3.jpg","assets/teteco/31/1_4.jpg","assets/teteco/31/1_5.jpg","assets/teteco/31/1_6.jpg","assets/teteco/31/1_7.jpg","assets/teteco/31/1_8.jpg","assets/teteco/31/1_9.jpg","assets/teteco/31/1_10.jpg","assets/teteco/31/1_11.jpg","assets/teteco/31/1_12.jpg","assets/teteco/31/1_13.jpg","assets/teteco/31/1_14.jpg","assets/teteco/31/1_15.jpg"],thumbs:["assets/teteco/31/thumb/1_1.jpg","assets/teteco/31/thumb/1_2.jpg","assets/teteco/31/thumb/1_3.jpg","assets/teteco/31/thumb/1_4.jpg","assets/teteco/31/thumb/1_5.jpg","assets/teteco/31/thumb/1_6.jpg","assets/teteco/31/thumb/1_7.jpg","assets/teteco/31/thumb/1_8.jpg","assets/teteco/31/thumb/1_9.jpg","assets/teteco/31/thumb/1_10.jpg","assets/teteco/31/thumb/1_11.jpg","assets/teteco/31/thumb/1_12.jpg","assets/teteco/31/thumb/1_13.jpg","assets/teteco/31/thumb/1_14.jpg","assets/teteco/31/thumb/1_15.jpg"]},
+  {id:"t32",brand:"teteco",brandName:"테테코",cat:"하의",name:"양기모카고조거",price:16000,origin:0,desc:"양기모카고조거 · 테테코 겨울. 색상 4가지(검정·멜란지·오트밀·딥레드), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["검정","멜란지","오트밀","딥레드"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/32/1_1.jpg",imgs:["assets/teteco/32/1_1.jpg","assets/teteco/32/1_2.jpg","assets/teteco/32/1_3.jpg","assets/teteco/32/1_4.jpg","assets/teteco/32/1_5.jpg","assets/teteco/32/1_6.jpg","assets/teteco/32/1_7.jpg","assets/teteco/32/1_8.jpg","assets/teteco/32/1_9.jpg","assets/teteco/32/1_10.jpg","assets/teteco/32/1_11.jpg","assets/teteco/32/1_12.jpg","assets/teteco/32/1_13.jpg","assets/teteco/32/1_14.jpg","assets/teteco/32/1_15.jpg"],thumbs:["assets/teteco/32/thumb/1_1.jpg","assets/teteco/32/thumb/1_2.jpg","assets/teteco/32/thumb/1_3.jpg","assets/teteco/32/thumb/1_4.jpg","assets/teteco/32/thumb/1_5.jpg","assets/teteco/32/thumb/1_6.jpg","assets/teteco/32/thumb/1_7.jpg","assets/teteco/32/thumb/1_8.jpg","assets/teteco/32/thumb/1_9.jpg","assets/teteco/32/thumb/1_10.jpg","assets/teteco/32/thumb/1_11.jpg","assets/teteco/32/thumb/1_12.jpg","assets/teteco/32/thumb/1_13.jpg","assets/teteco/32/thumb/1_14.jpg","assets/teteco/32/thumb/1_15.jpg"]},
+  {id:"t33",brand:"teteco",brandName:"테테코",cat:"하의",name:"웜골덴데님팬츠",price:39000,origin:0,desc:"웜골덴데님팬츠 · 테테코 겨울. 색상 2가지(데님·그레이데님), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["데님","그레이데님"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/33/1_1.jpg",imgs:["assets/teteco/33/1_1.jpg","assets/teteco/33/1_2.jpg","assets/teteco/33/1_3.jpg","assets/teteco/33/1_4.jpg","assets/teteco/33/1_5.jpg","assets/teteco/33/1_6.jpg","assets/teteco/33/1_7.jpg","assets/teteco/33/1_8.jpg","assets/teteco/33/1_9.jpg","assets/teteco/33/1_10.jpg","assets/teteco/33/1_11.jpg","assets/teteco/33/1_12.jpg","assets/teteco/33/1_13.jpg","assets/teteco/33/1_14.jpg","assets/teteco/33/1_15.jpg"],thumbs:["assets/teteco/33/thumb/1_1.jpg","assets/teteco/33/thumb/1_2.jpg","assets/teteco/33/thumb/1_3.jpg","assets/teteco/33/thumb/1_4.jpg","assets/teteco/33/thumb/1_5.jpg","assets/teteco/33/thumb/1_6.jpg","assets/teteco/33/thumb/1_7.jpg","assets/teteco/33/thumb/1_8.jpg","assets/teteco/33/thumb/1_9.jpg","assets/teteco/33/thumb/1_10.jpg","assets/teteco/33/thumb/1_11.jpg","assets/teteco/33/thumb/1_12.jpg","assets/teteco/33/thumb/1_13.jpg","assets/teteco/33/thumb/1_14.jpg","assets/teteco/33/thumb/1_15.jpg"]},
+  {id:"t34",brand:"teteco",brandName:"테테코",cat:"하의",name:"윈터나팔팬츠",price:10000,origin:0,desc:"윈터나팔팬츠 · 테테코 겨울. 색상 3가지(크림·브라운·검정), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 13장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","브라운","검정"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/34/1_1.jpg",imgs:["assets/teteco/34/1_1.jpg","assets/teteco/34/1_2.jpg","assets/teteco/34/1_3.jpg","assets/teteco/34/1_4.jpg","assets/teteco/34/1_5.jpg","assets/teteco/34/1_6.jpg","assets/teteco/34/1_7.jpg","assets/teteco/34/1_8.jpg","assets/teteco/34/1_9.jpg","assets/teteco/34/1_10.jpg","assets/teteco/34/1_11.jpg","assets/teteco/34/1_12.jpg","assets/teteco/34/1_13.jpg"],thumbs:["assets/teteco/34/thumb/1_1.jpg","assets/teteco/34/thumb/1_2.jpg","assets/teteco/34/thumb/1_3.jpg","assets/teteco/34/thumb/1_4.jpg","assets/teteco/34/thumb/1_5.jpg","assets/teteco/34/thumb/1_6.jpg","assets/teteco/34/thumb/1_7.jpg","assets/teteco/34/thumb/1_8.jpg","assets/teteco/34/thumb/1_9.jpg","assets/teteco/34/thumb/1_10.jpg","assets/teteco/34/thumb/1_11.jpg","assets/teteco/34/thumb/1_12.jpg","assets/teteco/34/thumb/1_13.jpg"]},
+  {id:"t35",brand:"teteco",brandName:"테테코",cat:"하의",name:"체크겨울조거",price:12000,origin:0,desc:"체크겨울조거 · 테테코 겨울. 색상 3가지(레드·검정·그린), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["레드","검정","그린"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/35/1_1.jpg",imgs:["assets/teteco/35/1_1.jpg","assets/teteco/35/1_2.jpg","assets/teteco/35/1_3.jpg","assets/teteco/35/1_4.jpg","assets/teteco/35/1_5.jpg","assets/teteco/35/1_6.jpg","assets/teteco/35/1_7.jpg","assets/teteco/35/1_8.jpg","assets/teteco/35/1_9.jpg","assets/teteco/35/1_10.jpg","assets/teteco/35/1_11.jpg","assets/teteco/35/1_12.jpg","assets/teteco/35/1_13.jpg","assets/teteco/35/1_14.jpg","assets/teteco/35/1_15.jpg"],thumbs:["assets/teteco/35/thumb/1_1.jpg","assets/teteco/35/thumb/1_2.jpg","assets/teteco/35/thumb/1_3.jpg","assets/teteco/35/thumb/1_4.jpg","assets/teteco/35/thumb/1_5.jpg","assets/teteco/35/thumb/1_6.jpg","assets/teteco/35/thumb/1_7.jpg","assets/teteco/35/thumb/1_8.jpg","assets/teteco/35/thumb/1_9.jpg","assets/teteco/35/thumb/1_10.jpg","assets/teteco/35/thumb/1_11.jpg","assets/teteco/35/thumb/1_12.jpg","assets/teteco/35/thumb/1_13.jpg","assets/teteco/35/thumb/1_14.jpg","assets/teteco/35/thumb/1_15.jpg"]},
+  {id:"t36",brand:"teteco",brandName:"테테코",cat:"하의",name:"코지라벨팬츠",price:13500,origin:0,desc:"코지라벨팬츠 · 테테코 겨울. 색상 4가지(검정·크림·백멜란지·보라), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["검정","크림","백멜란지","보라"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/36/1_1.jpg",imgs:["assets/teteco/36/1_1.jpg","assets/teteco/36/1_2.jpg","assets/teteco/36/1_3.jpg","assets/teteco/36/1_4.jpg","assets/teteco/36/1_5.jpg","assets/teteco/36/1_6.jpg","assets/teteco/36/1_7.jpg","assets/teteco/36/1_8.jpg","assets/teteco/36/1_9.jpg","assets/teteco/36/1_10.jpg","assets/teteco/36/1_11.jpg","assets/teteco/36/1_12.jpg","assets/teteco/36/1_13.jpg","assets/teteco/36/1_14.jpg","assets/teteco/36/1_15.jpg"],thumbs:["assets/teteco/36/thumb/1_1.jpg","assets/teteco/36/thumb/1_2.jpg","assets/teteco/36/thumb/1_3.jpg","assets/teteco/36/thumb/1_4.jpg","assets/teteco/36/thumb/1_5.jpg","assets/teteco/36/thumb/1_6.jpg","assets/teteco/36/thumb/1_7.jpg","assets/teteco/36/thumb/1_8.jpg","assets/teteco/36/thumb/1_9.jpg","assets/teteco/36/thumb/1_10.jpg","assets/teteco/36/thumb/1_11.jpg","assets/teteco/36/thumb/1_12.jpg","assets/teteco/36/thumb/1_13.jpg","assets/teteco/36/thumb/1_14.jpg","assets/teteco/36/thumb/1_15.jpg"]},
+  {id:"t37",brand:"teteco",brandName:"테테코",cat:"하의",name:"코지하렘팬츠",price:13500,origin:0,desc:"코지하렘팬츠 · 테테코 겨울. 색상 2가지(크림·올리브), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 8장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","올리브"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/37/1_1.jpg",imgs:["assets/teteco/37/1_1.jpg","assets/teteco/37/1_2.jpg","assets/teteco/37/1_3.jpg","assets/teteco/37/1_4.jpg","assets/teteco/37/1_5.jpg","assets/teteco/37/1_6.jpg","assets/teteco/37/1_7.jpg","assets/teteco/37/1_8.jpg"],thumbs:["assets/teteco/37/thumb/1_1.jpg","assets/teteco/37/thumb/1_2.jpg","assets/teteco/37/thumb/1_3.jpg","assets/teteco/37/thumb/1_4.jpg","assets/teteco/37/thumb/1_5.jpg","assets/teteco/37/thumb/1_6.jpg","assets/teteco/37/thumb/1_7.jpg","assets/teteco/37/thumb/1_8.jpg"]},
+  {id:"t38",brand:"teteco",brandName:"테테코",cat:"상의",name:"클래식카양기모맨투맨",price:15000,origin:0,desc:"클래식카양기모맨투맨 · 테테코 겨울. 색상 3가지(크림·오트밀·멜란지), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","오트밀","멜란지"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/38/1_1.jpg",imgs:["assets/teteco/38/1_1.jpg","assets/teteco/38/1_2.jpg","assets/teteco/38/1_3.jpg","assets/teteco/38/1_4.jpg","assets/teteco/38/1_5.jpg","assets/teteco/38/1_6.jpg","assets/teteco/38/1_7.jpg","assets/teteco/38/1_8.jpg","assets/teteco/38/1_9.jpg","assets/teteco/38/1_10.jpg","assets/teteco/38/1_11.jpg","assets/teteco/38/1_12.jpg","assets/teteco/38/1_13.jpg","assets/teteco/38/1_14.jpg","assets/teteco/38/1_15.jpg"],thumbs:["assets/teteco/38/thumb/1_1.jpg","assets/teteco/38/thumb/1_2.jpg","assets/teteco/38/thumb/1_3.jpg","assets/teteco/38/thumb/1_4.jpg","assets/teteco/38/thumb/1_5.jpg","assets/teteco/38/thumb/1_6.jpg","assets/teteco/38/thumb/1_7.jpg","assets/teteco/38/thumb/1_8.jpg","assets/teteco/38/thumb/1_9.jpg","assets/teteco/38/thumb/1_10.jpg","assets/teteco/38/thumb/1_11.jpg","assets/teteco/38/thumb/1_12.jpg","assets/teteco/38/thumb/1_13.jpg","assets/teteco/38/thumb/1_14.jpg","assets/teteco/38/thumb/1_15.jpg"]},
+  {id:"t39",brand:"teteco",brandName:"테테코",cat:"상하세트",name:"테디체크상하",price:29000,origin:0,desc:"테디체크상하 · 테테코 겨울. 색상 3가지(베이지·레드·검정), 사이즈 XS~XL. 위아래를 한 번에 맞출 수 있는 세트예요. 상세 사진 13장으로 앞·뒤·디테일까지 확인하세요.",colors:["베이지","레드","검정"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/39/1_1.jpg",imgs:["assets/teteco/39/1_1.jpg","assets/teteco/39/1_2.jpg","assets/teteco/39/1_3.jpg","assets/teteco/39/1_4.jpg","assets/teteco/39/1_5.jpg","assets/teteco/39/1_6.jpg","assets/teteco/39/1_7.jpg","assets/teteco/39/1_8.jpg","assets/teteco/39/1_9.jpg","assets/teteco/39/1_10.jpg","assets/teteco/39/1_11.jpg","assets/teteco/39/1_12.jpg","assets/teteco/39/1_13.jpg"],thumbs:["assets/teteco/39/thumb/1_1.jpg","assets/teteco/39/thumb/1_2.jpg","assets/teteco/39/thumb/1_3.jpg","assets/teteco/39/thumb/1_4.jpg","assets/teteco/39/thumb/1_5.jpg","assets/teteco/39/thumb/1_6.jpg","assets/teteco/39/thumb/1_7.jpg","assets/teteco/39/thumb/1_8.jpg","assets/teteco/39/thumb/1_9.jpg","assets/teteco/39/thumb/1_10.jpg","assets/teteco/39/thumb/1_11.jpg","assets/teteco/39/thumb/1_12.jpg","assets/teteco/39/thumb/1_13.jpg"]},
+  {id:"t40",brand:"teteco",brandName:"테테코",cat:"하의",name:"포켓코듀로이팬츠",price:15000,origin:0,desc:"포켓코듀로이팬츠 · 테테코 겨울. 색상 3가지(크림·브라운·검정), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","브라운","검정"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/40/1_1.jpg",imgs:["assets/teteco/40/1_1.jpg","assets/teteco/40/1_2.jpg","assets/teteco/40/1_3.jpg","assets/teteco/40/1_4.jpg","assets/teteco/40/1_5.jpg","assets/teteco/40/1_6.jpg","assets/teteco/40/1_7.jpg","assets/teteco/40/1_8.jpg","assets/teteco/40/1_9.jpg","assets/teteco/40/1_10.jpg","assets/teteco/40/1_11.jpg","assets/teteco/40/1_12.jpg","assets/teteco/40/1_13.jpg","assets/teteco/40/1_14.jpg","assets/teteco/40/1_15.jpg"],thumbs:["assets/teteco/40/thumb/1_1.jpg","assets/teteco/40/thumb/1_2.jpg","assets/teteco/40/thumb/1_3.jpg","assets/teteco/40/thumb/1_4.jpg","assets/teteco/40/thumb/1_5.jpg","assets/teteco/40/thumb/1_6.jpg","assets/teteco/40/thumb/1_7.jpg","assets/teteco/40/thumb/1_8.jpg","assets/teteco/40/thumb/1_9.jpg","assets/teteco/40/thumb/1_10.jpg","assets/teteco/40/thumb/1_11.jpg","assets/teteco/40/thumb/1_12.jpg","assets/teteco/40/thumb/1_13.jpg","assets/teteco/40/thumb/1_14.jpg","assets/teteco/40/thumb/1_15.jpg"]},
+  {id:"t41",brand:"teteco",brandName:"테테코",cat:"상의",name:"프렌치줄카라티",price:17000,origin:0,desc:"프렌치줄카라티 · 테테코 겨울. 색상 3가지(딥레드·소라·버터), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["딥레드","소라","버터"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/41/1_1.jpg",imgs:["assets/teteco/41/1_1.jpg","assets/teteco/41/1_2.jpg","assets/teteco/41/1_3.jpg","assets/teteco/41/1_4.jpg","assets/teteco/41/1_5.jpg","assets/teteco/41/1_6.jpg","assets/teteco/41/1_7.jpg","assets/teteco/41/1_8.jpg","assets/teteco/41/1_9.jpg","assets/teteco/41/1_10.jpg","assets/teteco/41/1_11.jpg","assets/teteco/41/1_12.jpg","assets/teteco/41/1_13.jpg","assets/teteco/41/1_14.jpg","assets/teteco/41/1_15.jpg"],thumbs:["assets/teteco/41/thumb/1_1.jpg","assets/teteco/41/thumb/1_2.jpg","assets/teteco/41/thumb/1_3.jpg","assets/teteco/41/thumb/1_4.jpg","assets/teteco/41/thumb/1_5.jpg","assets/teteco/41/thumb/1_6.jpg","assets/teteco/41/thumb/1_7.jpg","assets/teteco/41/thumb/1_8.jpg","assets/teteco/41/thumb/1_9.jpg","assets/teteco/41/thumb/1_10.jpg","assets/teteco/41/thumb/1_11.jpg","assets/teteco/41/thumb/1_12.jpg","assets/teteco/41/thumb/1_13.jpg","assets/teteco/41/thumb/1_14.jpg","assets/teteco/41/thumb/1_15.jpg"]},
+  {id:"t42",brand:"teteco",brandName:"테테코",cat:"상의",name:"하트스티치양기모맨투맨",price:18000,origin:0,desc:"하트스티치양기모맨투맨 · 테테코 겨울. 색상 2가지(크림·딥레드), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["크림","딥레드"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/42/1_1.jpg",imgs:["assets/teteco/42/1_1.jpg","assets/teteco/42/1_2.jpg","assets/teteco/42/1_3.jpg","assets/teteco/42/1_4.jpg","assets/teteco/42/1_5.jpg","assets/teteco/42/1_6.jpg","assets/teteco/42/1_7.jpg","assets/teteco/42/1_8.jpg","assets/teteco/42/1_9.jpg","assets/teteco/42/1_10.jpg","assets/teteco/42/1_11.jpg","assets/teteco/42/1_12.jpg","assets/teteco/42/1_13.jpg","assets/teteco/42/1_14.jpg","assets/teteco/42/1_15.jpg"],thumbs:["assets/teteco/42/thumb/1_1.jpg","assets/teteco/42/thumb/1_2.jpg","assets/teteco/42/thumb/1_3.jpg","assets/teteco/42/thumb/1_4.jpg","assets/teteco/42/thumb/1_5.jpg","assets/teteco/42/thumb/1_6.jpg","assets/teteco/42/thumb/1_7.jpg","assets/teteco/42/thumb/1_8.jpg","assets/teteco/42/thumb/1_9.jpg","assets/teteco/42/thumb/1_10.jpg","assets/teteco/42/thumb/1_11.jpg","assets/teteco/42/thumb/1_12.jpg","assets/teteco/42/thumb/1_13.jpg","assets/teteco/42/thumb/1_14.jpg","assets/teteco/42/thumb/1_15.jpg"]},
+  {id:"t43",brand:"teteco",brandName:"테테코",cat:"하의",name:"호피뽀송조거",price:15000,origin:0,desc:"호피뽀송조거 · 테테코 겨울. 색상 2가지(호피그레이·호피브라운), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 8장으로 앞·뒤·디테일까지 확인하세요.",colors:["호피그레이","호피브라운"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/43/1_1.jpg",imgs:["assets/teteco/43/1_1.jpg","assets/teteco/43/1_2.jpg","assets/teteco/43/1_3.jpg","assets/teteco/43/1_4.jpg","assets/teteco/43/1_5.jpg","assets/teteco/43/1_6.jpg","assets/teteco/43/1_7.jpg","assets/teteco/43/1_8.jpg"],thumbs:["assets/teteco/43/thumb/1_1.jpg","assets/teteco/43/thumb/1_2.jpg","assets/teteco/43/thumb/1_3.jpg","assets/teteco/43/thumb/1_4.jpg","assets/teteco/43/thumb/1_5.jpg","assets/teteco/43/thumb/1_6.jpg","assets/teteco/43/thumb/1_7.jpg","assets/teteco/43/thumb/1_8.jpg"]},
+  {id:"t44",brand:"teteco",brandName:"테테코",cat:"상의",name:"후리스줄맨투맨",price:16000,origin:0,desc:"후리스줄맨투맨 · 테테코 겨울. 색상 3가지(검정줄·블루줄·초코민트줄), 사이즈 XS~XL. 등원·외출에 매일 손이 가는 상의예요. 상세 사진 15장으로 앞·뒤·디테일까지 확인하세요.",colors:["검정줄","블루줄","초코민트줄"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/44/1_1.jpg",imgs:["assets/teteco/44/1_1.jpg","assets/teteco/44/1_2.jpg","assets/teteco/44/1_3.jpg","assets/teteco/44/1_4.jpg","assets/teteco/44/1_5.jpg","assets/teteco/44/1_6.jpg","assets/teteco/44/1_7.jpg","assets/teteco/44/1_8.jpg","assets/teteco/44/1_9.jpg","assets/teteco/44/1_10.jpg","assets/teteco/44/1_11.jpg","assets/teteco/44/1_12.jpg","assets/teteco/44/1_13.jpg","assets/teteco/44/1_14.jpg","assets/teteco/44/1_15.jpg"],thumbs:["assets/teteco/44/thumb/1_1.jpg","assets/teteco/44/thumb/1_2.jpg","assets/teteco/44/thumb/1_3.jpg","assets/teteco/44/thumb/1_4.jpg","assets/teteco/44/thumb/1_5.jpg","assets/teteco/44/thumb/1_6.jpg","assets/teteco/44/thumb/1_7.jpg","assets/teteco/44/thumb/1_8.jpg","assets/teteco/44/thumb/1_9.jpg","assets/teteco/44/thumb/1_10.jpg","assets/teteco/44/thumb/1_11.jpg","assets/teteco/44/thumb/1_12.jpg","assets/teteco/44/thumb/1_13.jpg","assets/teteco/44/thumb/1_14.jpg","assets/teteco/44/thumb/1_15.jpg"]},
+  {id:"t45",brand:"teteco",brandName:"테테코",cat:"하의",name:"후리스카고팬츠",price:16000,origin:0,desc:"후리스카고팬츠 · 테테코 겨울. 색상 3가지(오트밀·백멜란지·멜란지), 사이즈 XS~XL. 아이 움직임이 편한 하의예요. 상세 사진 11장으로 앞·뒤·디테일까지 확인하세요.",colors:["오트밀","백멜란지","멜란지"],sizes:["XS","S","M","L","XL"],img:"assets/teteco/45/1_1.jpg",imgs:["assets/teteco/45/1_1.jpg","assets/teteco/45/1_2.jpg","assets/teteco/45/1_3.jpg","assets/teteco/45/1_4.jpg","assets/teteco/45/1_5.jpg","assets/teteco/45/1_6.jpg","assets/teteco/45/1_7.jpg","assets/teteco/45/1_8.jpg","assets/teteco/45/1_9.jpg","assets/teteco/45/1_10.jpg","assets/teteco/45/1_11.jpg"],thumbs:["assets/teteco/45/thumb/1_1.jpg","assets/teteco/45/thumb/1_2.jpg","assets/teteco/45/thumb/1_3.jpg","assets/teteco/45/thumb/1_4.jpg","assets/teteco/45/thumb/1_5.jpg","assets/teteco/45/thumb/1_6.jpg","assets/teteco/45/thumb/1_7.jpg","assets/teteco/45/thumb/1_8.jpg","assets/teteco/45/thumb/1_9.jpg","assets/teteco/45/thumb/1_10.jpg","assets/teteco/45/thumb/1_11.jpg"]}
+];
+
+/* 브랜드 */
+const BRANDS = {
+  all:    { key:"all",    name:"전체",        title:"아이고마켓 전체 상품 79종", tag:"" },
+  merry:  { key:"merry",  name:"메리고라운드", title:"메리고라운드 2026 겨울 34종", tag:"merry" },
+  teteco: { key:"teteco", name:"테테코",       title:"테테코 겨울 45종", tag:"teteco" }
+};
+const BRAND_ORDER = ["all", "merry", "teteco"];
+const BRAND_COUNTS = {
+  all: PRODUCTS.length,
+  merry: PRODUCTS.filter(p => p.brand === "merry").length,
+  teteco: PRODUCTS.filter(p => p.brand === "teteco").length
+};
+
+/* 카테고리 필터는 실제 상품 구성(PRODUCTS)에서 뽑고, 순서만 보기 좋게 정리합니다 */
+const CAT_ORDER = ["상의", "하의", "원피스", "상하세트", "아우터", "잡화"];
+const CATS_ALL = ["전체", ...CAT_ORDER];
+let CATS = CATS_ALL.slice();
+
+const won = n => n.toLocaleString("ko-KR") + "원";
+const SHIP_FEE = 3000, FREE_OVER = 100000, PAGE_STEP = 12;
+
+/* ---------- 상태 ---------- */
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem("aigo_cart") || "[]"); } catch(e){ cart = []; }
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+function saveCart(){ try{ localStorage.setItem("aigo_cart", JSON.stringify(cart)); }catch(e){} }
+function toast(msg){
+  const t = $("#toast"); t.textContent = msg; t.classList.add("is-on");
+  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove("is-on"), 2400);
+}
+function brandTag(p, cls){
+  const key = p.brand === "teteco" ? "teteco" : "merry";
+  return `<span class="brand-tag brand-tag--${key}${cls ? " " + cls : ""}">[${p.brandName}]</span>`;
+}
+
+/* ---------- 브랜드 · 카테고리 ---------- */
+let curBrand = "all", curCat = "전체", shown = PAGE_STEP;
+
+function brandProducts(){ return PRODUCTS.filter(p => curBrand === "all" || p.brand === curBrand); }
+
+function renderBrandSwitch(){
+  $("#brandSwitch").innerHTML = BRAND_ORDER.map(b => {
+    const info = BRANDS[b];
+    return `<button class="bs-btn ${b === curBrand ? "is-on" : ""}" data-brand="${b}" role="tab"
+      aria-selected="${b === curBrand}">${info.name}<span class="bs-count">(${BRAND_COUNTS[b]})</span></button>`;
+  }).join("");
+  $$("#brandSwitch .bs-btn").forEach(btn => btn.onclick = () => setBrand(btn.dataset.brand));
+}
+
+function brandIntroText(){
+  if(curBrand === "merry") return `<b>메리고라운드 2026 겨울</b> · 34종 · 사이즈 <b>XS~2XL</b> · 사진을 누르면 색상·사이즈 선택`;
+  if(curBrand === "teteco") return `<b>테테코 겨울</b> · 45종 · 사이즈 <b>XS~XL</b> · 모달에서 상세 사진 최대 15장 + 사이즈표 확인`;
+  return `브랜드를 고르면 <b>그 브랜드 상품만</b> 모아 볼 수 있어요 · 메리고라운드 34종 / 테테코 45종`;
+}
+
+function renderCats(){
+  const list = brandProducts();
+  CATS = ["전체", ...CAT_ORDER.filter(c => list.some(p => p.cat === c))];
+  if(!CATS.includes(curCat)) curCat = "전체";
+  $("#filters").innerHTML = CATS.map(c =>
+    `<button class="chip ${c === curCat ? "is-on" : ""}" data-cat="${c}">${c}</button>`
+  ).join("");
+  $$("#filters .chip").forEach(b => b.onclick = () => {
+    curCat = b.dataset.cat; shown = PAGE_STEP; renderCats(); renderGrid();
+  });
+}
+
+function renderShopHead(){
+  const map = {
+    all: {
+      eyebrow: "Our picks",
+      title: "메리고라운드 · 테테코 79종",
+      desc: "두 브랜드 79종을 한 곳에 담았어요. 브랜드를 고르면 그 브랜드 상품만, 카테고리를 고르면 그 안에서 다시 골라 볼 수 있어요."
+    },
+    merry: {
+      eyebrow: "Merry go round",
+      title: "메리고라운드 2026 겨울 34종",
+      desc: "실제 사진·색상·사이즈 그대로 담은 34종. 사진을 누르면 색상·사이즈를 고르고 주문 문구를 바로 복사할 수 있어요."
+    },
+    teteco: {
+      eyebrow: "Teteco",
+      title: "테테코 겨울 45종",
+      desc: "상품마다 상세 사진을 최대 15장까지 담았어요. 사진을 넘겨 보며 앞·뒤·디테일을 확인하고, 모달 안에서 테테코 사이즈표도 바로 볼 수 있어요."
+    }
+  }[curBrand];
+  $("#shopEyebrow").textContent = map.eyebrow;
+  $("#shopTitle").textContent = map.title;
+  $("#shopDesc").textContent = map.desc;
+  $("#brandIntro").innerHTML = brandIntroText();
+}
+
+function setBrand(brand, opts){
+  if(!BRANDS[brand]) return;
+  curBrand = brand; curCat = "전체"; shown = PAGE_STEP;
+  renderBrandSwitch(); renderShopHead(); renderCats(); renderGrid();
+  if(opts && opts.cat){ curCat = opts.cat; renderCats(); renderGrid(); }
+  if(opts && opts.scroll){
+    const el = $("#shop");
+    if(el) window.scrollTo({ top: el.offsetTop - 70, behavior: "smooth" });
+  }
+}
+
+/* ---------- 상품 그리드 ---------- */
+function colorTags(p, max){
+  const list = max ? p.colors.slice(0, max) : p.colors;
+  const rest = p.colors.length - list.length;
+  return list.map(c => `<span class="ctag">${c}</span>`).join("") +
+    (rest > 0 ? `<span class="ctag ctag--more">+${rest}</span>` : "");
+}
+function priceRow(p){
+  if(!p.origin || p.origin <= p.price){
+    return `<span class="price">${won(p.price)}</span>`;
+  }
+  return `<span class="price">${won(p.price)}</span>
+          <span class="origin">${won(p.origin)}</span>
+          <span class="price-off">${Math.round((1 - p.price/p.origin)*100)}%</span>`;
+}
+function renderGrid(){
+  const list = brandProducts().filter(p => curCat === "전체" || p.cat === curCat);
+  const page = list.slice(0, shown);
+  $("#grid").innerHTML = page.map(p => `
+    <article class="card" data-brand="${p.brand}">
+      <div class="card-media" data-open="${p.id}">
+        <img src="${p.img}" alt="[${p.brandName}] ${p.name}" loading="lazy" decoding="async">
+        ${p.imgs.length > 1 ? `<span class="card-shots">📷 ${p.imgs.length}장</span>` : ""}
+      </div>
+      <div class="card-body">
+        <div class="card-meta">${brandTag(p)}<span class="card-cat">${p.cat}</span></div>
+        <h3 class="card-name" data-open="${p.id}">${p.name}</h3>
+        <div class="price-row">${priceRow(p)}</div>
+        <div class="clist">${colorTags(p, 3)}</div>
+        <div class="card-sizes">사이즈 ${p.sizes.join("·")}</div>
+        <div class="card-actions">
+          <button class="btn btn--ghost btn--sm" data-open="${p.id}">자세히</button>
+          <button class="btn btn--peach btn--sm" data-quick="${p.id}">담기</button>
+        </div>
+      </div>
+    </article>`).join("");
+  $$("#grid [data-open]").forEach(el => el.onclick = () => openModal(el.dataset.open));
+  $$("#grid [data-quick]").forEach(el => el.onclick = () => openModal(el.dataset.quick));
+  const more = $("#moreWrap");
+  if(more){
+    more.innerHTML = list.length > shown
+      ? `<button class="btn btn--ghost" id="moreBtn">상품 더 보기 (${list.length - shown}개)</button>`
+      : `<span class="grid-count">${list.length}개 상품을 모두 보셨어요</span>`;
+    const b = $("#moreBtn");
+    if(b) b.onclick = () => { shown += PAGE_STEP; renderGrid(); };
+  }
+}
+
+/* ---------- 모달 ---------- */
+let cur = { product:null, size:null, color:null, qty:1, imgs:[], idx:0 };
+
+function showGallery(p, idx){
+  const imgs = cur.imgs;
+  cur.idx = Math.max(0, Math.min(idx, imgs.length - 1));
+  const img = $("#modalImg");
+  img.src = imgs[cur.idx];
+  img.alt = `[${p.brandName}] ${p.name} 상세 사진 ${cur.idx+1}`;
+  const many = imgs.length > 1;
+  $("#galPrev").hidden = !many;
+  $("#galNext").hidden = !many;
+  const cnt = $("#galCount");
+  cnt.hidden = !many;
+  cnt.textContent = `${cur.idx + 1} / ${imgs.length}`;
+  $$("#galThumbs button").forEach((b, i) => b.classList.toggle("is-on", i === cur.idx));
+}
+
+function openModal(id){
+  const p = PRODUCTS.find(x => x.id === id); if(!p) return;
+  cur = { product:p, size:p.sizes[Math.min(1, p.sizes.length-1)], color:p.colors[0], qty:1,
+          imgs:p.imgs.slice(), idx:0 };
+
+  /* 갤러리 — 모달을 열 때 비로소 상세 사진을 만듭니다(목록에서는 대표 사진 1장만 로딩) */
+  $("#galThumbs").innerHTML = p.thumbs.map((t, i) =>
+    `<button data-i="${i}" aria-label="사진 ${i+1}"><img src="${t}" alt="" loading="lazy" decoding="async"></button>`
+  ).join("");
+  $$("#galThumbs button").forEach(b => b.onclick = () => showGallery(p, +b.dataset.i));
+  showGallery(p, 0);
+
+  $("#galWord").textContent = p.brand === "teteco" ? "teteco" : "merry go round";
+  $("#galNote").textContent = p.imgs.length > 1
+    ? `상세 사진 ${p.imgs.length}장 · ${p.brandName}`
+    : `${p.brandName} · 실제 상품 사진`;
+  $("#modalBrand").className = "brand-tag brand-tag--" + (p.brand === "teteco" ? "teteco" : "merry");
+  $("#modalBrand").textContent = `[${p.brandName}]`;
+  $("#modalCat").textContent = p.cat;
+  $("#modalTitle").textContent = p.name;
+  $("#modalDesc").textContent = p.desc;
+  $("#modalPrice").textContent = won(p.price);
+  const hasOrigin = p.origin && p.origin > p.price;
+  $("#modalOrigin").textContent = hasOrigin ? won(p.origin) : "";
+  $("#modalOrigin").style.display = hasOrigin ? "" : "none";
+  $("#modalOff").textContent = hasOrigin ? Math.round((1 - p.price/p.origin)*100) + "%" : "";
+  $("#modalOff").style.display = hasOrigin ? "" : "none";
+
+  /* 테테코만 사이즈표 */
+  const isTeteco = p.brand === "teteco";
+  $("#sizeChartBox").hidden = !isTeteco;
+  $("#sizeHint").textContent = isTeteco
+    ? "테테코는 XS~XL 5단계 · 사이즈표를 바로 볼 수 있어요"
+    : "메리고라운드는 XS~2XL · 아이 나이·키를 모르면 카톡으로 문의하세요";
+  if(!isTeteco) closeSizeChart();
+
+  $("#sizeRow").innerHTML = p.sizes.map(s => `<button class="opt-btn ${s===cur.size?"is-on":""}" data-size="${s}">${s}</button>`).join("");
+  $("#colorRow").innerHTML = p.colors.map((c,i) => `<button class="opt-btn color-btn ${i===0?"is-on":""}" data-color="${i}">${c}</button>`).join("");
+  $("#qNum").textContent = 1;
+  updateTotal();
+  $$("[data-size]").forEach(b => b.onclick = () => {
+    cur.size = b.dataset.size;
+    $$("[data-size]").forEach(x=>x.classList.toggle("is-on", x===b));
+  });
+  $$("[data-color]").forEach(b => b.onclick = () => {
+    cur.color = cur.product.colors[+b.dataset.color];
+    $$("[data-color]").forEach(x=>x.classList.toggle("is-on", x===b));
+  });
+  showOverlay(); $("#modal").classList.add("is-on"); document.body.style.overflow = "hidden";
+}
+function updateTotal(){ $("#modalTotal").textContent = won(cur.product.price * cur.qty); }
+function closeModal(){
+  $("#modal").classList.remove("is-on"); hideOverlay(); document.body.style.overflow = "";
+  closeSizeChart();
+  $(".gal-stage img").removeAttribute("src");
+  $("#galThumbs").innerHTML = "";   /* 모달을 닫으면 상세 사진은 비워 둡니다 */
+}
+function showOverlay(){ $("#overlay").classList.add("is-on"); }
+function hideOverlay(){
+  if(!$("#modal").classList.contains("is-on") && !$("#drawer").classList.contains("is-on")){
+    $("#overlay").classList.remove("is-on"); document.body.style.overflow = "";
+  }
+}
+
+/* 테테코 사이즈표: 처음 열 때 이미지를 불러옵니다 */
+function closeSizeChart(){
+  $("#sizeChartBody").hidden = true;
+  $("#sizeChartBox").classList.remove("is-open");
+  $("#sizeChartToggle").setAttribute("aria-expanded", "false");
+}
+$("#sizeChartToggle").onclick = () => {
+  const body = $("#sizeChartBody");
+  const willOpen = body.hidden;
+  body.hidden = !willOpen;
+  $("#sizeChartBox").classList.toggle("is-open", willOpen);
+  $("#sizeChartToggle").setAttribute("aria-expanded", String(willOpen));
+  if(willOpen){
+    const img = body.querySelector("img");
+    if(!img.getAttribute("src")) img.src = img.dataset.src;
+  }
+};
+$("#sizeChartBody").addEventListener("click", e => {
+  if(e.target.tagName === "IMG") $("#chartLightbox").classList.add("is-on");
+});
+$("#chartLightbox").onclick = () => $("#chartLightbox").classList.remove("is-on");
+
+/* ---------- 장바구니 ---------- */
+function addToCart(item){
+  const key = item.id + "|" + item.size + "|" + item.color;
+  const found = cart.find(c => c.key === key);
+  if(found){ found.qty += item.qty; }
+  else cart.push({ key, id:item.id, size:item.size, color:item.color, qty:item.qty });
+  saveCart(); renderCart();
+}
+function renderCart(){
+  const totalQty = cart.reduce((s,c)=>s+c.qty,0);
+  const badge = $("#cartCount");
+  badge.textContent = totalQty; badge.hidden = totalQty === 0;
+  if(!cart.length){
+    $("#drawerBody").innerHTML = `<div class="cart-empty"><span>🧺</span>아직 담긴 옷이 없어요.<br>마음에 드는 옷을 담아 보세요!</div>`;
+    $("#cartTotal").textContent = "0원"; return;
+  }
+  $("#drawerBody").innerHTML = cart.map(c => {
+    const p = PRODUCTS.find(x=>x.id===c.id); if(!p) return "";
+    return `<div class="cart-item">
+      <img src="${p.img}" alt="[${p.brandName}] ${p.name}" loading="lazy">
+      <div>
+        <div class="ci-brand">${brandTag(p)}</div>
+        <div class="ci-name">${p.name}</div>
+        <div class="ci-opt">${c.color} · ${c.size} 사이즈 · ${c.qty}개</div>
+        <div class="ci-price">${won(p.price*c.qty)}</div>
+      </div>
+      <div class="ci-right"><button class="ci-del" data-del="${c.key}">삭제</button></div>
+    </div>`;
+  }).join("");
+  $("#cartTotal").textContent = won(cartTotal());
+  $$("[data-del]").forEach(b => b.onclick = () => {
+    cart = cart.filter(c => c.key !== b.dataset.del); saveCart(); renderCart();
+  });
+}
+function cartTotal(){ return cart.reduce((s,c)=>{ const p = PRODUCTS.find(x=>x.id===c.id); return s + (p ? p.price*c.qty : 0); },0); }
+
+/* ---------- 주문 문구 ---------- */
+function buildOrderText(items){
+  const lines = ["[아이고마켓 주문서]", ""];
+  items.forEach((it, i) => {
+    const p = PRODUCTS.find(x=>x.id===it.id);
+    if(!p) return;
+    lines.push(`${i+1}. [${p.brandName}] ${p.name}`);
+    lines.push(`   색상: ${it.color} / 사이즈: ${it.size} / 수량: ${it.qty}개`);
+    lines.push(`   금액: ${won(p.price*it.qty)}`);
+  });
+  const total = items.reduce((s,it)=>{ const p = PRODUCTS.find(x=>x.id===it.id); return s + (p?p.price*it.qty:0); },0);
+  const ship = total >= FREE_OVER || total === 0 ? 0 : SHIP_FEE;
+  lines.push("");
+  lines.push(`상품 합계: ${won(total)}`);
+  lines.push(`배송비: ${ship === 0 ? "무료" : won(ship)}`);
+  lines.push(`결제 예정 금액: ${won(total + ship)}`);
+  lines.push("");
+  lines.push("입금 계좌: 신한 110-206-046646 (예금주 한수연)");
+  lines.push("※ 제주 6,000원 / 공구 상품은 품목별 배송비 3,000원(제주 6,000원) 별도");
+  lines.push("※ 세일·신상 배송은 평일 기준 7~14일 (리오더 시 최대 한 달 이상) 걸려요.");
+  lines.push("※ 세탁 전 불량 확인 필수 · 수령 후 2일 이내 사진 첨부해 카톡 주시면 처리해 드려요.");
+  lines.push("");
+  lines.push("받는 분:");
+  lines.push("연락처:");
+  lines.push("주소:");
+  lines.push("요청사항:");
+  return lines.join("\n");
+}
+function copyText(text){
+  return new Promise(resolve => {
+    const done = () => resolve(true);
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(done).catch(()=>fallback());
+    } else fallback();
+    function fallback(){
+      try{
+        const ta = document.createElement("textarea");
+        ta.value = text; ta.style.position="fixed"; ta.style.top="-1000px"; ta.style.opacity="0";
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta); resolve(ok);
+      }catch(e){ resolve(false); }
+    }
+  });
+}
+function goKakao(){ window.open(KAKAO_URL, "_blank", "noopener"); }
+
+/* 주문서 문구를 복사한 뒤 카카오톡 오픈채팅으로 이동 */
+async function orderFlow(items){
+  const text = buildOrderText(items);
+  const ok = await copyText(text);
+  ok ? toast("주문 문구를 복사했어요! 채팅창에 붙여넣어 주세요 💌")
+     : toast("주문 문구를 복사하지 못했어요. 화면의 내용을 직접 복사해 주세요.");
+  goKakao();
+}
+
+/* ---------- 이벤트 ---------- */
+$("#qMinus").onclick = () => { cur.qty = Math.max(1, cur.qty-1); $("#qNum").textContent = cur.qty; updateTotal(); };
+$("#qPlus").onclick  = () => { cur.qty = Math.min(20, cur.qty+1); $("#qNum").textContent = cur.qty; updateTotal(); };
+$("#modalClose").onclick = closeModal;
+$("#overlay").onclick = () => { closeModal(); closeDrawer(); };
+$("#galPrev").onclick = () => showGallery(cur.product, cur.idx - 1);
+$("#galNext").onclick = () => showGallery(cur.product, cur.idx + 1);
+document.addEventListener("keydown", e => {
+  if($("#modal").classList.contains("is-on") && cur.product){
+    if(e.key === "ArrowLeft"){ showGallery(cur.product, cur.idx - 1); return; }
+    if(e.key === "ArrowRight"){ showGallery(cur.product, cur.idx + 1); return; }
+  }
+  if(e.key === "Escape"){ $("#chartLightbox").classList.remove("is-on"); closeModal(); closeDrawer(); }
+});
+
+$("#addCart").onclick = () => {
+  addToCart({ id:cur.product.id, size:cur.size, color:cur.color, qty:cur.qty });
+  toast("주문 바구니에 담았어요 🛍️");
+  closeModal(); openDrawer();
+};
+$("#orderKakao").onclick = () => {
+  addToCart({ id:cur.product.id, size:cur.size, color:cur.color, qty:cur.qty });
+  orderFlow([{ id:cur.product.id, size:cur.size, color:cur.color, qty:cur.qty }]);
+};
+
+function openDrawer(){ showOverlay(); $("#drawer").classList.add("is-on"); document.body.style.overflow="hidden"; }
+function closeDrawer(){ $("#drawer").classList.remove("is-on"); hideOverlay(); if(!$("#modal").classList.contains("is-on")) document.body.style.overflow=""; }
+$("#cartBtn").onclick = openDrawer;
+$("#drawerClose").onclick = closeDrawer;
+$("#copyAll").onclick = async () => {
+  if(!cart.length){ toast("주문 바구니가 비어 있어요"); return; }
+  const ok = await copyText(buildOrderText(cart));
+  toast(ok ? "주문서를 복사했어요! 카톡에 붙여넣어 주세요 💌" : "복사에 실패했어요. 다시 시도해 주세요.");
+};
+$("#cartKakao").onclick = () => { if(!cart.length){ toast("주문 바구니가 비어 있어요"); return; } orderFlow(cart); };
+
+/* 카톡 링크 */
+$$(".js-kakao,[data-kakao]").forEach(a => a.addEventListener("click", e => {
+  e.preventDefault();
+  goKakao();
+}));
+
+/* 브랜드 바로가기 (브랜드 카드·푸터) */
+$$(".js-brand").forEach(el => el.addEventListener("click", e => {
+  e.preventDefault();
+  setBrand(el.dataset.brand, { scroll:true, cat: el.dataset.cat });
+}));
+
+/* 공지 닫기 */
+$("#noticeClose").onclick = () => { $("#noticeBar").style.display = "none"; };
+
+/* 헤더 스크롤 */
+const header = $("#header"), toTop = $("#toTop");
+window.addEventListener("scroll", () => {
+  const y = window.scrollY;
+  header.classList.toggle("is-stuck", y > 10);
+  toTop.classList.toggle("is-on", y > 500);
+}, { passive:true });
+toTop.onclick = () => window.scrollTo({ top:0, behavior:"smooth" });
+
+/* 등장 애니메이션 */
+if("IntersectionObserver" in window){
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add("is-in"); io.unobserve(e.target); }
+  }), { threshold:.12 });
+  $$(".reveal").forEach(el => io.observe(el));
+} else { $$(".reveal").forEach(el => el.classList.add("is-in")); }
+
+/* 초기화 */
+renderBrandSwitch(); renderShopHead(); renderCats(); renderGrid(); renderCart();
+</script>
+</body>
+</html>
