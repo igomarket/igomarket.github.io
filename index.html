@@ -178,6 +178,48 @@ ul{margin:0;padding:0;list-style:none}
 .strip-track span::after{content:"·";margin-left:26px;color:#C9AE7C}
 @keyframes marq{to{transform:translateX(-50%)}}
 
+/* ---------- 상품 검색 ---------- */
+.search{max-width:580px;margin:0 auto 24px}
+.search-field{
+  display:flex;align-items:center;gap:10px;padding:0 8px 0 18px;
+  background:#fff;border:1.5px solid var(--line);border-radius:999px;
+  box-shadow:var(--shadow-sm);transition:border-color .2s,background .2s,box-shadow .2s;
+}
+.search.is-on .search-field{border-color:var(--peach);background:var(--cream-2);box-shadow:0 10px 26px rgba(247,156,134,.16)}
+.search-field:focus-within{border-color:var(--peach-deep);box-shadow:0 12px 30px rgba(247,156,134,.22)}
+.search-ico{flex:none;width:18px;height:18px;color:#B8A492}
+.search-ico svg{display:block;width:100%;height:100%}
+.search-input{
+  flex:1;min-width:0;padding:14px 0;border:0;background:none;font:inherit;
+  font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-.02em;
+}
+.search-input::placeholder{color:#BCAE9E;font-weight:600}
+.search-input:focus{outline:0}
+.search-clear{
+  flex:none;width:28px;height:28px;border-radius:50%;background:#FBF3E8;color:#9C8B7A;
+  font-size:16px;font-weight:800;line-height:1;display:grid;place-items:center;transition:.18s;
+}
+.search-clear:hover{background:var(--peach);color:#7A3B28}
+.search-clear[hidden]{display:none}
+.search-status{margin-top:11px;text-align:center;font-size:12.5px;font-weight:700;color:var(--ink-soft);letter-spacing:-.01em}
+.search-status:empty{display:none}
+.search-status b{color:var(--ink);font-weight:850}
+.search-status.is-empty{color:var(--peach-deep)}
+.search-empty{
+  grid-column:1/-1;text-align:center;background:#fff;border:1.5px dashed var(--line);
+  border-radius:var(--radius-lg);padding:38px 22px;
+}
+.search-empty .se-ico{font-size:26px;display:block;margin-bottom:10px}
+.search-empty p{font-size:14px;color:var(--ink-soft);font-weight:600;line-height:1.75}
+.search-empty p b{color:var(--ink);font-weight:800}
+.search-keys{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.search-keys .chip{padding:8px 14px;font-size:12.5px}
+/* 검색 중에는 브랜드 탭을 중립 상태로 (결과는 여덟 브랜드 전체) */
+.brand-switch.is-search .bs-btn.is-on{
+  background:#fff;border-color:var(--line);color:var(--ink-soft);box-shadow:var(--shadow-sm);
+}
+.brand-switch.is-search .bs-btn.is-on .bs-count{background:#FBF3E8;color:#A99887}
+
 /* ---------- 브랜드 전환 탭 ---------- */
 .brand-switch{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
 .bs-btn{
@@ -627,6 +669,15 @@ details p{padding:0 20px 19px 46px;font-size:13.8px;color:#6E5E51;line-height:1.
   .bs-btn{justify-content:center;padding:10px 8px;font-size:13px;gap:6px}
   .bs-btn .bs-count{font-size:10.5px;padding:2px 6px}
   .brand-intro{font-size:12px;margin-bottom:22px}
+  .search{margin-bottom:18px}
+  .search-field{padding:0 6px 0 14px;gap:8px}
+  .search-ico{width:16px;height:16px}
+  .search-input{padding:12px 0;font-size:14px}
+  .search-clear{width:26px;height:26px;font-size:15px}
+  .search-status{font-size:12px;margin-top:9px;line-height:1.6}
+  .search-empty{padding:28px 16px}
+  .search-keys{gap:6px;margin-top:14px}
+  .brand-switch.is-search{display:none}
   .modal{width:100%;max-width:none;left:0;top:auto;bottom:0;transform:translateY(100%);border-radius:26px 26px 0 0;max-height:92vh}
   .modal.is-on{transform:translateY(0)}
   .modal-media{border-radius:26px 26px 0 0}
@@ -726,6 +777,18 @@ details p{padding:0 20px 19px 46px;font-size:13.8px;color:#6E5E51;line-height:1.
         <span class="eyebrow" id="shopEyebrow">Our picks</span>
         <h2 id="shopTitle">메리고라운드 · 테테코 · 비비드아이 · 보니토 · 미니로브 · 블랙빈 · 소이빈 · 니니벨로</h2>
         <p id="shopDesc">여덟 브랜드를 한 곳에 담았어요. 브랜드를 고르면 그 브랜드 상품만, 카테고리를 고르면 그 안에서 다시 골라 볼 수 있어요.</p>
+      </div>
+
+      <!-- 상품 검색 -->
+      <div class="search reveal" id="searchBox" role="search" aria-label="상품 검색">
+        <div class="search-field">
+          <span class="search-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.4 15.4 20 20"></path></svg></span>
+          <input class="search-input" id="searchInput" type="text" inputmode="search" enterkeyhint="search"
+                 autocomplete="off" role="searchbox" aria-controls="grid" aria-label="상품 검색"
+                 placeholder="상품명, 브랜드, 색상 검색...">
+          <button class="search-clear" id="searchClear" type="button" aria-label="검색어 지우기" hidden>×</button>
+        </div>
+        <p class="search-status" id="searchStatus" role="status" aria-live="polite"></p>
       </div>
 
       <!-- 브랜드 전환 탭 -->
@@ -1771,6 +1834,13 @@ function renderCats(){
 }
 
 function renderShopHead(){
+  if(isSearching()){
+    $("#shopEyebrow").textContent = "Search";
+    $("#shopTitle").textContent = "상품 검색";
+    $("#shopDesc").textContent = "여덟 브랜드 전체에서 상품명·브랜드·카테고리·색상으로 찾아보세요. 검색어를 지우면 보던 브랜드 탭으로 돌아갑니다.";
+    $("#brandIntro").innerHTML = "";
+    return;
+  }
   const map = {
     all: {
       eyebrow: "Our picks",
@@ -1826,6 +1896,7 @@ function renderShopHead(){
 
 function setBrand(brand, opts){
   if(!BRANDS[brand]) return;
+  resetSearchInput();
   curBrand = brand; curCat = "전체"; shown = PAGE_STEP;
   renderBrandSwitch(); renderShopHead(); renderCats(); renderGrid();
   if(opts && opts.cat){ curCat = opts.cat; renderCats(); renderGrid(); }
@@ -1833,6 +1904,64 @@ function setBrand(brand, opts){
     const el = $("#shop");
     if(el) window.scrollTo({ top: el.offsetTop - 70, behavior: "smooth" });
   }
+}
+
+/* ---------- 상품 검색 ----------
+   브랜드 탭 옆 검색창에서 상품명·브랜드·카테고리·색상·사이즈로 찾습니다.
+   공백·대소문자는 무시하고, 한글 조합(IME)이 끝날 때마다 결과를 갱신합니다. */
+const SEARCH_KEYS = ["맨투맨", "조거", "니트", "원피스", "가디건", "패딩", "비니"];
+const normText = s => String(s || "").toLowerCase().replace(/\s+/g, "");
+const SEARCH_HAY = PRODUCTS.map(p => normText(
+  [p.name, p.brandName, p.brand, p.cat, (p.colors || []).join(" "), (p.sizes || []).join(" ")].join(" ")));
+let searchTokens = [];
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+}
+function isSearching(){ return searchTokens.length > 0; }
+function searchQuery(){ return $("#searchInput").value.trim(); }
+function searchList(){
+  if(!isSearching()) return [];
+  return PRODUCTS.filter((p, i) => searchTokens.every(t => SEARCH_HAY[i].includes(t)));
+}
+function readSearchTokens(){
+  const q = searchQuery();
+  searchTokens = normText(q) ? q.split(/\s+/).map(normText).filter(Boolean) : [];
+}
+function renderSearchStatus(){
+  const on = isSearching(), st = $("#searchStatus"), list = on ? searchList() : [];
+  $("#searchBox").classList.toggle("is-on", on);
+  $("#searchClear").hidden = !$("#searchInput").value;
+  st.classList.toggle("is-empty", on && !list.length);
+  st.innerHTML = !on ? "" : list.length
+    ? `‘<b>${esc(searchQuery())}</b>’ 검색 결과 <b>${list.length}</b>개`
+    : `‘<b>${esc(searchQuery())}</b>’ 검색 결과가 없어요`;
+}
+function setSearchMode(on){
+  $("#filters").style.display = on ? "none" : "";
+  $("#brandIntro").style.display = on ? "none" : "";
+  $("#brandSwitch").classList.toggle("is-search", on);
+}
+/* 검색어가 바뀔 때 — 결과 목록·안내 문구 갱신 */
+function renderSearch(){
+  readSearchTokens();
+  setSearchMode(isSearching());
+  shown = PAGE_STEP;
+  renderShopHead();
+  renderSearchStatus();
+  renderGrid();
+}
+/* 검색어 지우기 — 보던 브랜드 탭·카테고리 상태로 깔끔하게 복귀 */
+function resetSearchInput(){
+  if(!$("#searchInput").value) return;
+  $("#searchInput").value = "";
+  readSearchTokens();
+  setSearchMode(false);
+  renderSearchStatus();
+}
+function clearSearch(){
+  $("#searchInput").value = "";
+  renderSearch();
 }
 
 /* ---------- 상품 그리드 ---------- */
@@ -1850,9 +1979,23 @@ function priceRow(p){
           <span class="origin">${won(p.origin)}</span>
           <span class="price-off">${Math.round((1 - p.price/p.origin)*100)}%</span>`;
 }
+function currentList(){
+  return isSearching() ? searchList()
+    : brandProducts().filter(p => curCat === "전체" || p.cat === curCat);
+}
 function renderGrid(){
-  const list = brandProducts().filter(p => curCat === "전체" || p.cat === curCat);
+  const list = currentList();
   const page = list.slice(0, shown);
+  if(!list.length && isSearching()){
+    $("#grid").innerHTML = `<div class="search-empty">
+        <span class="se-ico" aria-hidden="true">🔍</span>
+        <p><b>‘${esc(searchQuery())}’</b>에 맞는 상품을 찾지 못했어요.<br>브랜드 이름이나 색상으로 다시 찾아보세요.</p>
+        <div class="search-keys">${SEARCH_KEYS.map(k => `<button class="chip" data-key="${k}">${k}</button>`).join("")}</div>
+      </div>`;
+    $$("#grid [data-key]").forEach(b => b.onclick = () => { $("#searchInput").value = b.dataset.key; renderSearch(); });
+    $("#moreWrap").innerHTML = "";
+    return;
+  }
   $("#grid").innerHTML = page.map(p => `
     <article class="card" data-brand="${p.brand}">
       <div class="card-media" data-open="${p.id}">
@@ -2177,6 +2320,20 @@ $$(".js-kakao,[data-kakao]").forEach(a => a.addEventListener("click", e => {
   e.preventDefault();
   goKakao();
 }));
+
+/* 상품 검색창 — 한글 조합 중에는 다시 그리지 않고, 조합이 끝난 글자부터 바로 보여줍니다 */
+(function searchEvents(){
+  const input = $("#searchInput");
+  let composing = false;
+  input.addEventListener("compositionstart", () => { composing = true; });
+  input.addEventListener("compositionend", () => { composing = false; renderSearch(); });
+  input.addEventListener("input", e => { if(composing || e.isComposing) return; renderSearch(); });
+  input.addEventListener("keydown", e => {
+    if(e.key === "Escape"){ e.preventDefault(); e.stopPropagation(); clearSearch(); }
+    if(e.key === "Enter") e.preventDefault();
+  });
+  $("#searchClear").onclick = () => { clearSearch(); input.focus(); };
+})();
 
 /* 브랜드 바로가기 (브랜드 카드·푸터) */
 $$(".js-brand").forEach(el => el.addEventListener("click", e => {
